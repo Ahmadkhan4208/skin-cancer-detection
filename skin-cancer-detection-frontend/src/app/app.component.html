@@ -1,0 +1,18 @@
+<div class="app-container">
+  <header>
+    <h1>Skin Cancer Detection</h1>
+  </header>
+
+  <main>
+    <app-image-upload *ngIf="!results"></app-image-upload>
+    <app-results-display 
+      *ngIf="results" 
+      [results]="results"
+      (newUpload)="resetUpload()">
+    </app-results-display>
+  </main>
+
+  <footer>
+    <p>For educational purposes only. Consult a healthcare professional for medical advice.</p>
+  </footer>
+</div>

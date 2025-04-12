@@ -1,0 +1,38 @@
+<div class="results-container">
+  <div class="results-card">
+    <h2>Analysis Results</h2>
+    
+    <div class="result-summary" [ngClass]="{
+      'benign': results?.conclusion?.toLowerCase().includes('benign'),
+      'malignant': !results?.conclusion?.toLowerCase().includes('benign')
+    }">
+      <mat-icon class="result-icon">
+        {{ results?.conclusion?.toLowerCase().includes('benign') ? 'check_circle' : 'warning' }}
+      </mat-icon>
+      <h3>{{ results?.conclusion || 'No conclusion available' }}</h3>
+      <p *ngIf="results?.confidence" class="confidence">
+        Confidence: {{ (results.confidence * 100).toFixed(2) }}%
+      </p>
+    </div>
+
+    <div class="result-details">
+      <h4>Lesion Type: {{ lesionType }}</h4>
+      <p>Classification: {{ results?.predicted_class || 'Unknown' }}</p>
+    </div>
+
+    <div class="recommendation">
+      <mat-icon>medical_services</mat-icon>
+      <p>{{ results?.conclusion?.includes('Benign') ? 
+          'No immediate treatment needed, but regular monitoring is recommended' : 
+          'Please consult a dermatologist for further evaluation' }}
+      </p>
+    </div>
+
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="uploadNew()">
+        <mat-icon>cloud_upload</mat-icon>
+        Analyze Another Image
+      </button>
+    </div>
+  </div>
+</div>

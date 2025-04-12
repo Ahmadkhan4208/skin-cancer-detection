@@ -1,0 +1,12 @@
+/* Add this to your component's CSS file */
+mat-icon.result-icon {
+    font-size: 48px; /* Adjust size as needed */
+    width: auto;
+    height: auto;
+    color: inherit; /* Or specific color like #ff0000 for red */
+  }
+  
+  /* If using Material Icons font */
+  .mat-icon {
+    font-family: 'Material Icons' !important;
+  }

@@ -1,0 +1,38 @@
+<div class="upload-container">
+  <div class="upload-card" *ngIf="!showResults">
+    <h2>Skin Cancer Detection</h2>
+    <p class="subtitle">Upload an image of your skin lesion for analysis</p>
+    
+    <div class="upload-area" 
+         (click)="fileInput.click()" 
+         [class.drag-over]="isDragging"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+      <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      <p *ngIf="!selectedFile">Drag & drop your image here or click to browse</p>
+      <div *ngIf="selectedFile" class="preview-container">
+        <img [src]="imagePreview" alt="Preview" class="image-preview">
+        <button mat-icon-button class="remove-btn" (click)="removeImage($event)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" 
+              (click)="analyze()" 
+              [disabled]="!selectedFile || isLoading">
+        <span *ngIf="!isLoading">Analyze Image</span>
+        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+      </button>
+    </div>
+  </div>
+
+  <app-results-display 
+    *ngIf="showResults"
+    [results]="analysisResults"
+    (newUpload)="resetUpload()">
+  </app-results-display>
+</div>
