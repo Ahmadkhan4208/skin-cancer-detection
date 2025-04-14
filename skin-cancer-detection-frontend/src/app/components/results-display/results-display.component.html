@@ -3,11 +3,11 @@
     <h2>Analysis Results</h2>
     
     <div class="result-summary" [ngClass]="{
-      'benign': results?.conclusion?.toLowerCase().includes('benign'),
-      'malignant': !results?.conclusion?.toLowerCase().includes('benign')
+      'benign': results?.is_benign,
+      'malignant': !results?.is_benign
     }">
       <mat-icon class="result-icon">
-        {{ results?.conclusion?.toLowerCase().includes('benign') ? 'check_circle' : 'warning' }}
+        {{ results?.is_benign ? 'check_circle' : 'warning' }}
       </mat-icon>
       <h3>{{ results?.conclusion || 'No conclusion available' }}</h3>
       <p *ngIf="results?.confidence" class="confidence">
@@ -17,12 +17,14 @@
 
     <div class="result-details">
       <h4>Lesion Type: {{ lesionType }}</h4>
-      <p>Classification: {{ results?.predicted_class || 'Unknown' }}</p>
+      <div class="description">
+        <p>{{ results?.description || 'No description available' }}</p>
+      </div>
     </div>
 
     <div class="recommendation">
       <mat-icon>medical_services</mat-icon>
-      <p>{{ results?.conclusion?.includes('Benign') ? 
+      <p>{{ results?.is_benign ? 
           'No immediate treatment needed, but regular monitoring is recommended' : 
           'Please consult a dermatologist for further evaluation' }}
       </p>

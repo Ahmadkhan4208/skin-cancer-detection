@@ -1,12 +1,93 @@
-/* Add this to your component's CSS file */
-mat-icon.result-icon {
-    font-size: 48px; /* Adjust size as needed */
-    width: auto;
-    height: auto;
-    color: inherit; /* Or specific color like #ff0000 for red */
-  }
-  
-  /* If using Material Icons font */
-  .mat-icon {
-    font-family: 'Material Icons' !important;
-  }
+.results-container {
+  width: 100%;
+  max-width: 600px; /* Match your upload card width */
+  margin: 0 auto;
+}
+
+.results-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.result-summary {
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.result-summary.benign {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.result-summary.malignant {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.result-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+}
+
+.confidence {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.result-details {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #e3f2fd;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.description {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  border-left: 4px solid #3f51b5;
+}
+
+.recommendation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #fff8e1;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.actions {
+  margin-top: 1.5rem;
+}
+
+/* Ensure consistent spacing */
+h2, h3, h4 {
+  margin: 0.5rem 0;
+}
+.results-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.results-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 600px; /* Match upload card width */
+  margin: 0 auto; /* Center horizontally */
+}

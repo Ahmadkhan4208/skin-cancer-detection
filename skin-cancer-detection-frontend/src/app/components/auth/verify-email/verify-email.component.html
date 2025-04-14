@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Verify Your Email</h2>
+<mat-dialog-content>
+  <p>We sent a 6-digit code to <strong>{{data.email}}</strong></p>
+  
+  <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Verification Code</mat-label>
+      <input matInput formControlName="code" type="text" inputmode="numeric">
+      <mat-error *ngIf="verifyForm.get('code')?.hasError('required')">
+        Code is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <button mat-button (click)="resendCode()" [disabled]="countdown > 0">
+    Resend Code {{countdown > 0 ? '(' + countdown + 's)' : ''}}
+  </button>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="verifyForm.invalid || isLoading">
+    Verify
+  </button>
+</mat-dialog-actions>

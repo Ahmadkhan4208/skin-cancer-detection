@@ -86,7 +86,7 @@ export class ImageUploadComponent {
 
   analyze(): void {
     if (!this.selectedFile) return;
-
+  
     this.isLoading = true;
     this.showResults = false;
     
@@ -97,7 +97,8 @@ export class ImageUploadComponent {
         this.analysisResults = {
           predicted_class: response.predicted_class,
           confidence: response.confidence,
-          conclusion: response.conclusion
+          conclusion: response.conclusion,
+          description: response.description
         };
       },
       error: (error) => {
@@ -108,6 +109,9 @@ export class ImageUploadComponent {
         } else {
           this.snackBar.open('Server error. Please try again.', 'Close', { duration: 3000 });
         }
+      },
+      complete: () => {
+        this.isLoading = false;
       }
     });
   }
@@ -117,5 +121,11 @@ export class ImageUploadComponent {
     this.imagePreview = null;
     this.showResults = false;
     this.analysisResults = null;
+    
+    // Reset the file input to allow re-uploading the same file
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 }

@@ -1,15 +1,20 @@
 <div class="app-container">
   <header>
     <h1>Skin Cancer Detection</h1>
+    <div class="auth-actions" *ngIf="isAuthenticated$ | async">
+      <span class="user-email" matTooltip="Logged in as {{ userEmail$ | async }}">
+        <mat-icon class="user-icon">account_circle</mat-icon>
+        {{ getUsername(userEmail$ | async) }}
+      </span>
+      <button mat-button (click)="logout()" class="logout-button">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </div>
   </header>
 
   <main>
-    <app-image-upload *ngIf="!results"></app-image-upload>
-    <app-results-display 
-      *ngIf="results" 
-      [results]="results"
-      (newUpload)="resetUpload()">
-    </app-results-display>
+    <router-outlet></router-outlet>
   </main>
 
   <footer>

@@ -1,11 +1,11 @@
 import {
   BrowserModule,
   DomRendererFactory2
-} from "./chunk-N37QEZ7Z.js";
-import "./chunk-67Q4LKMM.js";
+} from "./chunk-JZGM7MOJ.js";
+import "./chunk-KWD4ZCFO.js";
 import {
   DOCUMENT
-} from "./chunk-DITTXYZP.js";
+} from "./chunk-24P7NBUE.js";
 import {
   ANIMATION_MODULE_TYPE,
   Inject,
@@ -14,15 +14,19 @@ import {
   NgZone,
   RendererFactory2,
   RuntimeError,
-  __objRest,
-  __spreadValues,
   performanceMarkFeature,
   setClassMetadata,
   ɵɵdefineInjectable,
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-EFOSVCYK.js";
+} from "./chunk-AF2GL2QR.js";
+import "./chunk-6Q4RANH6.js";
+import "./chunk-FFZIAYYX.js";
+import {
+  __objRest,
+  __spreadValues
+} from "./chunk-CXCX2JKZ.js";
 
 // node_modules/@angular/animations/fesm2022/private_export-CacKMzxJ.mjs
 var AnimationMetadataType;

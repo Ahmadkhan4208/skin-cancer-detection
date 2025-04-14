@@ -5,6 +5,10 @@ from io import BytesIO
 import os
 from typing import Dict
 from tensorflow.keras.models import load_model
+from sqlalchemy import Boolean, Column, Integer, String, DateTime, Float
+from sqlalchemy.ext.declarative import declarative_base
+from .database import Base
+from datetime import datetime
 
 
 from app.config import settings
@@ -80,7 +84,8 @@ def predict(model, image_path: str) -> Dict:
             'all_predictions': confidence_scores,
             'conclusion': conclusion,
             'low_confidence': low_confidence,
-            'is_benign': predicted_class in benign_classes
+            'is_benign': predicted_class in benign_classes,
+            "description": get_description(predicted_class)
         }
         
     except Exception as e:
@@ -89,12 +94,53 @@ def predict(model, image_path: str) -> Dict:
             'details': 'Please check the input image and model compatibility.'
         }
 
-def get_description(class_name: str, lesion_type: str) -> str:
+def get_description(class_name: str) -> str:
     """Get description based on the prediction"""
     descriptions = {
-        "Benign": "This appears to be a non-cancerous skin lesion. However, you should still monitor it for changes.",
-        "Melanoma": "Melanoma is the most serious type of skin cancer. It develops in the cells that produce melanin.",
-        "Basal Cell Carcinoma": "Basal cell carcinoma is a type of skin cancer that begins in the basal cells.",
+        "akiec": "Actinic keratoses: Precancerous scaly patches on sun-damaged skin",
+        "bcc": "Basal cell carcinoma: Slow-growing skin cancer that rarely metastasizes",
+        "bkl": "Benign keratosis: Non-cancerous skin growths like seborrheic keratosis",
+        "df": "Dermatofibroma: Harmless firm bump, often on legs",
+        "mel": "Melanoma: Most dangerous skin cancer that can spread quickly",
+        "nv": "Melanocytic nevus: Common mole, typically harmless",
+        "vasc": "Vascular lesion: Blood vessel-related skin markings"
     }
-    
-    return descriptions.get(lesion_type, "Please consult a dermatologist for proper diagnosis.")
+    return descriptions.get(class_name, "Please consult a dermatologist for proper diagnosis.")
+
+# Database Models
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
+    is_verified = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+class VerificationToken(Base):
+    __tablename__ = "verification_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, index=True)
+    token = Column(String, unique=True, index=True)
+    expires_at = Column(DateTime)
+
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, index=True)
+    token = Column(String, unique=True, index=True)
+    expires_at = Column(DateTime)
+
+class PredictionHistory(Base):
+    __tablename__ = "prediction_history"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True)
+    image_path = Column(String)  # or store the image in binary
+    prediction_result = Column(String)  # could be JSON string
+    predicted_at = Column(DateTime, default=datetime.utcnow)
+    confidence = Column(Float)
+    is_benign = Column(Boolean)

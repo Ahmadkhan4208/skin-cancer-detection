@@ -1,0 +1,100 @@
+.upload-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #3f51b5;  
+    margin-bottom: 16px;
+  }
+  
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  
+  /* Ensure Material Icons are properly aligned */
+  .mat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .upload-area {
+    transition: all 0.3s ease;
+  }
+  
+  .results-container {
+    margin-top: 20px;
+  }
+  
+  /* Ensure proper spacing when switching between views */
+  .upload-card {
+    min-height: 400px; /* Adjust based on your design */
+    display: flex;
+    flex-direction: column;
+  }
+  /* Add these styles to your existing CSS */
+.upload-area {
+    transition: all 0.3s ease;
+    opacity: 1;
+  }
+  
+  .upload-area.hidden {
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+  }
+  
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .preview-container {
+    position: relative;
+    margin: 0 auto;
+    max-width: 300px;
+  }
+  
+  .image-preview {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 4px;
+  }
+  
+  .remove-btn {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .loading-text {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #3f51b5;
+  }
+  
+  /* Ensure spinner is properly colored */
+  .mat-progress-spinner circle, .mat-spinner circle {
+    stroke: #3f51b5;
+  }

@@ -1,16 +1,26 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
 import os
 from datetime import datetime
 from contextlib import asynccontextmanager
 
-from app.schemas import PredictionResult
-from app.models import load_model_h5, predict
+from app.schemas import PredictionResult, User
+from app.models import load_model_h5, predict, Base
 from app.config import settings
+from app.database import engine, get_db
+from app.auth import router as auth_router
+from app.dependencies import get_current_user
 
+# Initialize database tables and model
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Create database tables
+    Base.metadata.create_all(bind=engine)
+    
+    # Load ML model
     global model
     model = load_model_h5()
     yield
@@ -35,7 +45,10 @@ app.add_middleware(
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Load model at startup
+# Include auth router
+app.include_router(auth_router)
+
+# Global model variable
 model = None
 
 @app.get("/")
@@ -43,8 +56,12 @@ def read_root():
     return {"message": "Skin Cancer Detection API is running"}
 
 @app.post("/analyze", response_model=PredictionResult)
-async def analyze_image(image: UploadFile = File(..., description="An image file")):
-    print(f"Received file with content_type: {image.content_type}")  # Add this before validation
+async def analyze_image(
+    image: UploadFile = File(..., description="An image file"),
+    # current_user: User = Depends(get_current_user),
+    # db: Session = Depends(get_db)
+):
+    # Validate file type and size
     if not image.content_type.startswith('image/'):
         raise HTTPException(
             status_code=400,
@@ -58,7 +75,7 @@ async def analyze_image(image: UploadFile = File(..., description="An image file
         )
     
     try:
-        # Save file temporarily (optional)
+        # Save file temporarily
         file_path = f"static/uploads/{datetime.now().timestamp()}_{image.filename}"
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         
@@ -67,12 +84,15 @@ async def analyze_image(image: UploadFile = File(..., description="An image file
         
         # Make prediction
         prediction = predict(model, file_path)
-        print("prediction: ",prediction)
+        
+        # Here you could store the prediction in the database if you want
+        # using the PredictionHistory model we created earlier
         
         return {
             "predicted_class": prediction["predicted_class"],
             "confidence": prediction["confidence"],
-            "conclusion":prediction["conclusion"]
+            "conclusion": prediction["conclusion"],
+            "description": prediction["description"]
         }
         
     except Exception as e:

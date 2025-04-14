@@ -1,24 +1,39 @@
 import { Component } from '@angular/core';
-import { ImageUploadComponent } from './components/image-upload/image-upload.component';
-import { ResultsDisplayComponent } from './components/results-display/results-display.component';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { AuthService } from './services/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule, RouterOutlet } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [ImageUploadComponent, ResultsDisplayComponent, CommonModule]
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule
+  ]
 })
 export class AppComponent {
-  results: any = null;
+  isAuthenticated$: Observable<boolean>;
+  userEmail$: Observable<string | null>;
 
-  resetUpload(): void {
-    this.results = null;
+  constructor(private authService: AuthService) {
+    this.isAuthenticated$ = this.authService.isAuthenticated();
+    this.userEmail$ = this.authService.userEmail$;
   }
 
-  // You'll want to connect this to the actual results from the API
-  // This is just a placeholder for the structure
-  onAnalysisComplete(results: any): void {
-    this.results = results;
+  logout(): void {
+    this.authService.logout();
+  }
+  getUsername(email: string | null): string {
+    return email?.split('@')[0] || '';
   }
 }

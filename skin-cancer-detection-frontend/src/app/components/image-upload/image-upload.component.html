@@ -1,16 +1,20 @@
 <div class="upload-container">
+  <!-- Only show upload card when NOT showing results -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Analyzing your image...</p>
+  </div>
   <div class="upload-card" *ngIf="!showResults">
     <h2>Skin Cancer Detection</h2>
     <p class="subtitle">Upload an image of your skin lesion for analysis</p>
     
     <div class="upload-area" 
          (click)="fileInput.click()" 
-         [class.drag-over]="isDragging"
-         (dragover)="onDragOver($event)"
-         (dragleave)="onDragLeave($event)"
-         (drop)="onDrop($event)">
+         [class.drag-over]="isDragging">
       <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
-      <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      <div class="icon-container" *ngIf="!selectedFile">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+      </div>
       <p *ngIf="!selectedFile">Drag & drop your image here or click to browse</p>
       <div *ngIf="selectedFile" class="preview-container">
         <img [src]="imagePreview" alt="Preview" class="image-preview">
@@ -20,16 +24,14 @@
       </div>
     </div>
 
-    <div class="actions">
-      <button mat-raised-button color="primary" 
-              (click)="analyze()" 
-              [disabled]="!selectedFile || isLoading">
-        <span *ngIf="!isLoading">Analyze Image</span>
-        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+    <div class="actions" *ngIf="selectedFile && !isLoading">
+      <button mat-raised-button color="primary" (click)="analyze()">
+        Analyze Image
       </button>
     </div>
   </div>
 
+  <!-- Show results card when results are available -->
   <app-results-display 
     *ngIf="showResults"
     [results]="analysisResults"

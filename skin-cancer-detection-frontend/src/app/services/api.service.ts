@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,17 +10,27 @@ import { environment } from '../../environments/environment';
 export class ApiService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
-  // api.service.ts
-analyzeImage(imageFile: File): Observable<any> {
-  console.log('Uploading file:', imageFile.name, imageFile.type, imageFile.size); // Debug
-  
-  const formData = new FormData();
-  formData.append('image', imageFile, imageFile.name); // Added filename as 3rd param
-  
-  return this.http.post(`${this.apiUrl}/analyze`, formData, {
-    reportProgress: true // Optional: track upload progress
-  });
-}
+  private getHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  analyzeImage(imageFile: File): Observable<any> {
+    console.log('Uploading file:', imageFile.name, imageFile.type, imageFile.size); // Keep your debug logging
+    
+    const formData = new FormData();
+    formData.append('image', imageFile, imageFile.name); // Keep filename as 3rd param
+    
+    return this.http.post(`${this.apiUrl}/analyze`, formData, {
+      headers: this.getHeaders(),
+      reportProgress: true // Keep progress tracking
+    });
+  }
 }
