@@ -2,6 +2,9 @@
   <header>
     <h1>Skin Cancer Detection</h1>
     <div class="auth-actions" *ngIf="isAuthenticated$ | async">
+      <span class="user-role" matTooltip="Role: {{ userRole$ | async }}">
+        {{ userRole$ | async }}
+      </span>
       <span class="user-email" matTooltip="Logged in as {{ userEmail$ | async }}">
         <mat-icon class="user-icon">account_circle</mat-icon>
         {{ getUsername(userEmail$ | async) }}

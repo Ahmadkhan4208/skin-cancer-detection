@@ -9,6 +9,7 @@ interface LoginResponse {
   access_token: string;
   token_type: string;
   email: string;  // Added email to the response interface
+  role: string;
 }
 
 @Injectable({
@@ -18,6 +19,7 @@ export class AuthService {
   private apiUrl = environment.apiUrl;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private userEmailSubject = new BehaviorSubject<string | null>(null); // Track user email
+  private userRoleSubject = new BehaviorSubject<string | null>(null); // Track user role
   private token: string | null = null;
   private isBrowser: boolean;
   private pendingRegistration: { email: string, password: string } | null = null;
@@ -35,24 +37,31 @@ export class AuthService {
   get userEmail$(): Observable<string | null> {
     return this.userEmailSubject.asObservable();
   }
+  get userRole$(): Observable<string | null> {
+    return this.userRoleSubject.asObservable();
+  }
 
   private initializeAuthState(): void {
     if (this.isBrowser) {
       this.token = localStorage.getItem('access_token');
       const email = localStorage.getItem('user_email');
+      const role = localStorage.getItem("role");
       this.isAuthenticatedSubject.next(!!this.token);
       this.userEmailSubject.next(email);
+      this.userRoleSubject.next(role);
     }
   }
 
-  private setToken(token: string, email: string): void {
+  private setToken(token: string, email: string, role: string): void {
     this.token = token;
     if (this.isBrowser) {
       localStorage.setItem('access_token', token);
       localStorage.setItem('user_email', email);
+      localStorage.setItem('role', role);
     }
     this.isAuthenticatedSubject.next(true);
     this.userEmailSubject.next(email);
+    this.userRoleSubject.next(role);
   }
 
   private removeToken(): void {
@@ -60,9 +69,11 @@ export class AuthService {
     if (this.isBrowser) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('user_email');
+      localStorage.removeItem('role');
     }
     this.isAuthenticatedSubject.next(false);
     this.userEmailSubject.next(null);
+    this.userRoleSubject.next(null);
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
@@ -72,7 +83,8 @@ export class AuthService {
     
     return this.http.post<LoginResponse>(`${this.apiUrl}/token`, formData).pipe(
       tap(response => {
-        this.setToken(response.access_token, response.email);
+        console.log(response)
+        this.setToken(response.access_token, response.email, response.role);
       })
     );
   }
@@ -103,12 +115,12 @@ export class AuthService {
     });
     
     return this.http.post(`${this.apiUrl}/register`, 
-      { email: email, password: password },
+      { email: email, password: password, role: role },
       { headers: headers }
     ).pipe(
       tap((response: any) => {
         if (response.access_token) {
-          this.setToken(response.access_token, email);
+          this.setToken(response.access_token, email, role);
         }
       })
     );

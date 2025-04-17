@@ -23,9 +23,9 @@ class VerifyCodeRequest(BaseModel):
 class UserBase(BaseModel):
     email: EmailStr
 
-class UserCreate(BaseModel):
-    email: EmailStr
+class UserCreate(UserBase):
     password: str
+    role: str
 
 class User(UserBase):
     id: int
@@ -38,6 +38,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     email: str
+    role: str
 
 class TokenData(BaseModel):
     email: Optional[str] = None

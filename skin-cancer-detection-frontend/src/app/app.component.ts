@@ -24,10 +24,12 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 export class AppComponent {
   isAuthenticated$: Observable<boolean>;
   userEmail$: Observable<string | null>;
+  userRole$: Observable<string | null>;
 
   constructor(private authService: AuthService) {
     this.isAuthenticated$ = this.authService.isAuthenticated();
     this.userEmail$ = this.authService.userEmail$;
+    this.userRole$ = this.authService.userRole$;
   }
 
   logout(): void {

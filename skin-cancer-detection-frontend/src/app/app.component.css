@@ -47,6 +47,14 @@
     border-right: 1px solid rgba(255, 255, 255, 0.2);
     color: rgba(255, 255, 255, 0.9);
   }
+  .user-role {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding: 0 16px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+  }
   
   .user-icon {
     margin-right: 8px;

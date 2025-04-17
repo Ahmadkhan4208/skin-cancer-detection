@@ -117,6 +117,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    role = Column(String)
 
 class VerificationToken(Base):
     __tablename__ = "verification_tokens"
