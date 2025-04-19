@@ -82,7 +82,7 @@ export class RegisterComponent {
   private registerUser(email: string, password: string, role: string): void {
     this.isLoading = true;
     
-    this.authService.sendVerificationEmail(email).subscribe({
+    this.authService.sendVerificationCode(email).subscribe({
       next: () => {
         this.isLoading = false;
         const dialogRef = this.dialog.open(VerifyEmailComponent, {
@@ -102,7 +102,7 @@ export class RegisterComponent {
 
   // Update completeRegistration to include role
   private completeRegistration(email: string, password: string, role: string) {
-    this.authService.completeRegistration(email, password, role).subscribe({
+    this.authService.register(email, password, role).subscribe({
       next: () => {
         this.router.navigate(['/login']);
         this.snackBar.open('Registration successful!', 'Close', { duration: 3000 });

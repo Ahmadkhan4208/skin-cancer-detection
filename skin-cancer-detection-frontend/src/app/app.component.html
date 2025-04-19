@@ -2,17 +2,30 @@
   <header>
     <h1>Skin Cancer Detection</h1>
     <div class="auth-actions" *ngIf="isAuthenticated$ | async">
-      <span class="user-role" matTooltip="Role: {{ userRole$ | async }}">
-        {{ userRole$ | async }}
-      </span>
-      <span class="user-email" matTooltip="Logged in as {{ userEmail$ | async }}">
+      
+      <!-- Profile Button (Always visible when authenticated) -->
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-button">
         <mat-icon class="user-icon">account_circle</mat-icon>
-        {{ getUsername(userEmail$ | async) }}
-      </span>
-      <button mat-button (click)="logout()" class="logout-button">
-        <mat-icon>logout</mat-icon>
-        Logout
       </button>
+      
+      <mat-menu #profileMenu="matMenu">
+        <div class="profile-header">
+          <mat-icon>account_circle</mat-icon>
+          <div class="profile-info">
+            <div class="username">{{ getUsername(userEmail$ | async) }}</div>
+            <div class="user-role">{{ userRole$ | async | titlecase }}</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="openProfile()">
+          <mat-icon>edit</mat-icon>
+          Update Profile
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </mat-menu>
     </div>
   </header>
 

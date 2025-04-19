@@ -72,7 +72,7 @@ export class VerifyEmailComponent {
     this.countdown = 60;
     this.startCountdown();
     
-    this.authService.sendVerificationEmail(this.data.email).subscribe({
+    this.authService.sendVerificationCode(this.data.email).subscribe({
       next: () => {
         this.snackBar.open('New code sent successfully', 'Close', { duration: 3000 });
       },

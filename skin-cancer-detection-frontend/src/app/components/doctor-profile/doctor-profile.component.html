@@ -1,0 +1,120 @@
+<div class="profile-container">
+    <mat-card class="profile-card">
+      <div class="card-header">
+        <div class="header-content">
+          <h1 class="card-title">Complete Your Professional Profile</h1>
+          <p class="card-subtitle">Elevate your medical presence with detailed credentials</p>
+          <div class="header-decoration"></div>
+        </div>
+        <div class="profile-icon">
+          <mat-icon>medical_services</mat-icon>
+        </div>
+      </div>
+  
+      <mat-card-content>
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+          <!-- Profile Image Section -->
+          <div class="form-section">
+            <h3 class="section-title">Profile Image</h3>
+            <div class="image-upload-container">
+              <div class="image-preview" *ngIf="imagePreview">
+                <img [src]="imagePreview" alt="Profile Preview">
+                <button mat-icon-button class="remove-image" (click)="removeImage()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+              
+              <div class="upload-area" *ngIf="!imagePreview">
+                <input type="file" #fileInput accept="image/*" (change)="onImagePicked($event)" hidden>
+                <button mat-raised-button type="button" (click)="fileInput.click()" class="upload-button">
+                  <mat-icon>add_photo_alternate</mat-icon>
+                  Upload Profile Photo
+                </button>
+                <p class="upload-hint">JPG or PNG, max 2MB</p>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Professional Information Section -->
+          <div class="form-section">
+            <h3 class="section-title">Professional Information</h3>
+            
+            <mat-form-field appearance="fill" class="elevated-field">
+              <mat-label>Medical Specialty</mat-label>
+              <mat-select formControlName="specialty" required>
+                <mat-option *ngFor="let spec of specialties" [value]="spec">
+                  {{ spec }}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>arrow_drop_down</mat-icon>
+              <mat-error *ngIf="specialtyControl?.hasError('required')">
+                Specialty selection is required
+              </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill" class="elevated-field">
+              <mat-label>Hospital/Clinic Affiliation</mat-label>
+              <input matInput formControlName="hospital" required>
+              <mat-icon matSuffix>local_hospital</mat-icon>
+              <mat-error *ngIf="hospitalControl?.hasError('required')">
+                Please enter your primary practice location
+              </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill" class="elevated-field">
+              <mat-label>Years of Clinical Experience</mat-label>
+              <input matInput type="number" formControlName="years_experience" min="0" required>
+              <mat-icon matSuffix>work_outline</mat-icon>
+              <mat-error *ngIf="yearsExperienceControl?.hasError('required')">
+                This field is required
+              </mat-error>
+              <mat-error *ngIf="yearsExperienceControl?.hasError('min')">
+                Experience cannot be negative
+              </mat-error>
+            </mat-form-field>
+          </div>
+  
+          <!-- Contact Information Section -->
+          <div class="form-section">
+            <h3 class="section-title">Contact Information</h3>
+            
+            <mat-form-field appearance="fill" class="elevated-field">
+              <mat-label>Contact Number</mat-label>
+              <input matInput type="tel" formControlName="contact" required>
+              <mat-icon matSuffix>contact_phone</mat-icon>
+              <mat-hint>Include country code if applicable</mat-hint>
+              <mat-error *ngIf="contactControl?.hasError('required')">
+                Contact number is mandatory
+              </mat-error>
+              <mat-error *ngIf="contactControl?.hasError('pattern')">
+                Please enter a valid phone number
+              </mat-error>
+            </mat-form-field>
+          </div>
+  
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button 
+              mat-raised-button 
+              class="submit-button"
+              type="submit"
+              [disabled]="profileForm.invalid || isSubmitting">
+              <span *ngIf="!isSubmitting">Complete Profile</span>
+              <span *ngIf="isSubmitting">
+                <mat-spinner diameter="20"></mat-spinner>
+                Processing...
+              </span>
+            </button>
+          </div>
+  
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="error-message">
+            <div class="error-content">
+              <mat-icon class="error-icon">error_outline</mat-icon>
+              <div class="error-text">{{ errorMessage }}</div>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

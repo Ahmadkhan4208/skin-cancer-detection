@@ -6,7 +6,9 @@ import os
 from typing import Dict
 from tensorflow.keras.models import load_model
 from sqlalchemy import Boolean, Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, ForeignKey, Integer, String, Float, DateTime, Date
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from .database import Base
 from datetime import datetime
 
@@ -114,10 +116,57 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
-    is_verified = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    is_active = Column(Boolean)
     role = Column(String)
+    
+    # Relationships
+    doctor_profile = relationship("Doctor", back_populates="user", uselist=False)
+    patient_profile = relationship("Patient", back_populates="user", uselist=False)
+
+class Doctor(Base):
+    __tablename__ = "doctors"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    specialty = Column(String)
+    rating = Column(Float)
+    hospital = Column(String)
+    years_experience = Column(Integer)
+    contact = Column(String)
+    profile_image_url = Column(String)  # Stores the path/URL to the image
+    
+    # Relationships
+    user = relationship("User", back_populates="doctor_profile")
+    appointments = relationship("Appointment", back_populates="doctor")
+
+class Patient(Base):
+    __tablename__ = "patients"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    full_name = Column(String)
+    date_of_birth = Column(Date)
+    phone = Column(String)
+    
+    # Relationships
+    user = relationship("User", back_populates="patient_profile")
+    appointments = relationship("Appointment", back_populates="patient")
+
+class Appointment(Base):
+    __tablename__ = "appointments"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("patients.id"))
+    doctor_id = Column(Integer, ForeignKey("doctors.id"))
+    date_time = Column(DateTime)
+    notes = Column(String, nullable=True)
+    status = Column(String, default="pending")  # pending/confirmed/cancelled
+    
+    # Relationships
+    patient = relationship("Patient", back_populates="appointments")
+    doctor = relationship("Doctor", back_populates="appointments")
 
 class VerificationToken(Base):
     __tablename__ = "verification_tokens"

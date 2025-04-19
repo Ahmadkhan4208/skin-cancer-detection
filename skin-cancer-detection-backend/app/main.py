@@ -44,6 +44,11 @@ app.add_middleware(
 # Mount static files (optional - for storing uploaded images)
 os.makedirs("static", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(
+    "/uploads/doctors",
+    StaticFiles(directory=os.path.join(os.getcwd(), "uploads", "doctors")),
+    name="doctor_images"
+)
 
 # Include auth router
 app.include_router(auth_router)

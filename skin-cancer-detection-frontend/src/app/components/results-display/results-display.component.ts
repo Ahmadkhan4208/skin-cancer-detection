@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { DoctorService } from '../../services/doctor.service'; // Import your doctor service
 
 @Component({
   selector: 'app-results-display',
@@ -10,12 +11,22 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [MatIconModule, MatButtonModule, CommonModule]
 })
-export class ResultsDisplayComponent {
+export class ResultsDisplayComponent implements OnInit {
   @Input() results: any;
   @Output() newUpload = new EventEmitter<void>();
+  doctors: any[] = [];  // Store the doctor data
+
+  constructor(private doctorService: DoctorService) {}
+
+  ngOnInit() {
+    // Fetch the doctors data when the component initializes
+    this.doctorService.getAllDoctors().subscribe((response: any) => {
+      console.log(response)
+      this.doctors = response;  // Assuming the API response is an array of doctors
+    });
+  }
 
   get lesionType(): string {
-    // Map the predicted_class to more readable format
     const types: {[key: string]: string} = {
       'nv': 'Melanocytic nevus',
       'mel': 'Melanoma',
