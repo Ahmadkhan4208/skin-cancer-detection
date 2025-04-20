@@ -105,6 +105,7 @@ class Appointment(AppointmentBase):
 
 # Add profile completion schemas
 class ProfileCompleteDoctor(BaseModel):
+    user_name: str
     specialty: str
     hospital: str
     years_experience: int

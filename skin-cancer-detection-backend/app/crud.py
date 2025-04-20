@@ -95,6 +95,7 @@ async def complete_user_profile(
         # Create doctor profile
         db_doctor = models.Doctor(
             user_id=user_id,
+            user_name=profile_data.user_name,
             specialty=profile_data.specialty,
             hospital=profile_data.hospital,
             years_experience=profile_data.years_experience,

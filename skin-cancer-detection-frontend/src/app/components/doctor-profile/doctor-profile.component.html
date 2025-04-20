@@ -38,6 +38,16 @@
           <!-- Professional Information Section -->
           <div class="form-section">
             <h3 class="section-title">Professional Information</h3>
+
+            <mat-form-field appearance="fill" class="elevated-field">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="user_name" required>
+                <mat-icon matSuffix>person</mat-icon>
+                <mat-error *ngIf="userNameControl?.hasError('required')">
+                  Full name is required
+                </mat-error>
+              </mat-form-field>
+              
             
             <mat-form-field appearance="fill" class="elevated-field">
               <mat-label>Medical Specialty</mat-label>

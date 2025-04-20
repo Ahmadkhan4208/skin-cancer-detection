@@ -303,3 +303,11 @@ $error-bg: #fff0f0;
     }
   }
 }
+.form-section {
+  display: flex;
+  flex-direction: column;
+
+  .mat-form-field {
+    margin-bottom: 20px;
+  }
+}

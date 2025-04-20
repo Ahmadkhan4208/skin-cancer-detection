@@ -133,6 +133,7 @@ async def register(
 @router.post("/complete-profile/{user_id}", response_model=Union[schemas.Doctor, schemas.Patient])
 async def complete_profile(
     user_id: int,
+    user_name: str = Form(None),
     specialty: str = Form(None),
     hospital: str = Form(None),
     years_experience: Optional[int] = Form(None),
@@ -147,6 +148,7 @@ async def complete_profile(
             if not (specialty and hospital and years_experience is not None):
                 raise HTTPException(status_code=422, detail="Missing doctor fields.")
             profile_data = schemas.ProfileCompleteDoctor(
+                user_name=user_name,
                 specialty=specialty,
                 hospital=hospital,
                 years_experience=years_experience,

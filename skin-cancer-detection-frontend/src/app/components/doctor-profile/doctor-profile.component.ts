@@ -63,6 +63,7 @@ export class DoctorProfileComponent implements OnInit {
     private router: Router
   ) {
     this.profileForm = this.fb.group({
+      user_name: ['', Validators.required],
       specialty: ['', Validators.required],
       hospital: ['', Validators.required],
       years_experience: [0, [Validators.required, Validators.min(0)]],
@@ -139,6 +140,7 @@ export class DoctorProfileComponent implements OnInit {
   
     // Prepare the profile data
     const profileData = {
+      user_name: this.profileForm.value.user_name,
       specialty: this.profileForm.value.specialty,
       hospital: this.profileForm.value.hospital,
       years_experience: this.profileForm.value.years_experience,
@@ -170,8 +172,10 @@ export class DoctorProfileComponent implements OnInit {
   get hospitalControl() { return this.profileForm.get('hospital'); }
   get yearsExperienceControl() { return this.profileForm.get('years_experience'); }
   get contactControl() { return this.profileForm.get('contact'); }
+  get userNameControl() { return this.profileForm.get('user_name'); }
 
   // Keep the original getters for backward compatibility
+  get user_name() { return this.userNameControl; }
   get specialty() { return this.specialtyControl; }
   get hospital() { return this.hospitalControl; }
   get years_experience() { return this.yearsExperienceControl; }

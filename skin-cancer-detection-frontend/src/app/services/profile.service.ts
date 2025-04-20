@@ -22,6 +22,7 @@ export class ProfileService {
   
     // Append each field explicitly
     if (role === 'doctor') {
+      formData.append('user_name', profileData.user_name);
       formData.append('specialty', profileData.specialty);
       formData.append('hospital', profileData.hospital);
       formData.append('years_experience', profileData.years_experience.toString());
