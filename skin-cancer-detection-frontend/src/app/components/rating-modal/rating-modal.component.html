@@ -1,0 +1,17 @@
+<!-- rating-modal.component.html -->
+<h2 mat-dialog-title>Rate Doctor</h2>
+<div mat-dialog-content>
+  <div class="rating-stars">
+    <button mat-icon-button *ngFor="let star of [1,2,3,4,5]" 
+            (click)="setRating(star)">
+      <mat-icon>{{ star <= selectedRating ? 'star' : 'star_border' }}</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+  <button mat-button (click)="submitRating()" 
+          [disabled]="selectedRating === 0">
+    Submit Rating
+  </button>
+</div>

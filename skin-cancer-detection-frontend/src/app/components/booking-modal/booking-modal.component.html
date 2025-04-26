@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Book Appointment</h2>
+
+<div mat-dialog-content>
+  <!-- Syncfusion DateTime Picker -->
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <ejs-datetimepicker
+      width="100%"
+      [(ngModel)]="appointmentDateTime"
+      placeholder="Select date and time">
+    </ejs-datetimepicker>
+  </mat-form-field>
+
+  <!-- Notes Textarea -->
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <textarea matInput [(ngModel)]="notes" placeholder="Additional notes"></textarea>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button
+          [mat-dialog-close]="{ dateTime: appointmentDateTime, notes: notes }"
+          cdkFocusInitial>
+    Confirm
+  </button>
+</div> 

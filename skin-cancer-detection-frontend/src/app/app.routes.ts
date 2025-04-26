@@ -5,6 +5,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { DoctorProfileComponent } from './components/doctor-profile/doctor-profile.component';
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
+import { DoctorConsultationComponent } from './components/doctor-consultation/doctor-consultation.component';
 
 export const routes: Routes = [
   { 
@@ -33,8 +34,12 @@ export const routes: Routes = [
     path: 'patient-profile',
     component: PatientProfileComponent
   },
+  {
+    path: 'doctor-consultation/:id',
+    component: DoctorConsultationComponent
+  },  
   { 
     path: '**', 
     redirectTo: 'login' 
-  }
+  },
 ];

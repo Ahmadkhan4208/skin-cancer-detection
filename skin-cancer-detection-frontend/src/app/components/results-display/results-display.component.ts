@@ -3,13 +3,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { DoctorService } from '../../services/doctor.service'; // Import your doctor service
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-results-display',
   templateUrl: './results-display.component.html',
   styleUrls: ['./results-display.component.css'],
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, CommonModule]
+  imports: [MatIconModule, MatButtonModule, CommonModule, RouterModule]
 })
 export class ResultsDisplayComponent implements OnInit {
   @Input() results: any;
@@ -21,7 +22,7 @@ export class ResultsDisplayComponent implements OnInit {
   ngOnInit() {
     // Fetch the doctors data when the component initializes
     this.doctorService.getAllDoctors().subscribe((response: any) => {
-      console.log(response)
+      console.log("response",response)
       this.doctors = response;  // Assuming the API response is an array of doctors
     });
   }

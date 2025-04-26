@@ -1,0 +1,58 @@
+<!-- doctor-consultation.component.html -->
+<div class="doctor-container">
+    <button mat-button routerLink="/doctors" class="back-button">
+      <mat-icon>arrow_back</mat-icon> Back to Doctors
+    </button>
+  
+    <mat-error *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </mat-error>
+  
+    <div class="doctor-profile" *ngIf="doctor">
+      <div class="doctor-image">
+        <img [src]="doctor.profile_image_url" alt="Doctor Profile Image" class="profile-img">
+      </div>
+      
+      <div class="doctor-info">
+        <h2>{{ doctor.user_name }}</h2>
+        
+        <div class="doctor-details">
+          <mat-icon>medical_services</mat-icon>
+          <span>Specialty: {{ doctor.specialty }}</span>
+        </div>
+        
+        <div class="doctor-details">
+          <mat-icon>local_hospital</mat-icon>
+          <span>Hospital: {{ doctor.hospital }}</span>
+        </div>
+        
+        <div class="doctor-details">
+          <mat-icon>work</mat-icon>
+          <span>Experience: {{ doctor.years_experience }} years</span>
+        </div>
+        
+        <div class="doctor-details">
+          <mat-icon>contact_phone</mat-icon>
+          <span>Contact: {{ doctor.contact }}</span>
+        </div>
+        
+        <div class="doctor-details">
+          <mat-icon>star</mat-icon>
+          <span>Rating: {{ doctor.rating ? (doctor.rating | number:'1.1-1') : 'Not rated yet' }}</span>
+        </div>
+      </div>
+  
+      <div class="appointment-control">
+        <button mat-raised-button 
+                color="primary"
+                [disabled]="buttonState === 'pending'"
+                (click)="openBookingDialog()"
+                class="action-button">
+          {{ getButtonText() }}
+          <mat-icon *ngIf="buttonState === 'pending'" class="spin">hourglass_top</mat-icon>
+        </button>
+      </div>
+    </div>
+  
+    <mat-spinner *ngIf="!doctor && !errorMessage" diameter="50" class="loading-spinner"></mat-spinner>
+  </div>

@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "skin-cancer-detection-frontend/package.json",
+        "use": "@vercel/static-build",
+        "config": { "distDir": "dist/skin-cancer-detection-frontend" }
+      },
+      {
+        "src": "api/skin-cancer-detection-backend/app/main.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "api/skin-cancer-detection-backend/app/main.py"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/skin-cancer-detection-frontend/$1"
+      }
+    ]
+  }
+  
