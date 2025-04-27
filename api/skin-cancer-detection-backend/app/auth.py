@@ -136,6 +136,7 @@ async def complete_profile(
     user_name: str = Form(None),
     specialty: str = Form(None),
     hospital: str = Form(None),
+    dob: str = Form(None),
     years_experience: Optional[int] = Form(None),
     contact: str = Form(...),
     profile_image: Optional[UploadFile] = File(None),
@@ -156,6 +157,8 @@ async def complete_profile(
             )
         else:  # patient
             profile_data = schemas.ProfileCompletePatient(
+                user_name=user_name,
+                dob=dob,
                 contact=contact
                 # Add any other patient-specific fields if needed
             )
@@ -174,12 +177,12 @@ async def complete_profile(
             doctor = crud.get_doctor_by_user_id(db, user_id=user_id)
             if not doctor:
                 raise HTTPException(status_code=404, detail="Doctor profile not found.")
-            return doctor
+            return schemas.Doctor.from_orm(doctor)
         else:
             patient = crud.get_patient_by_user_id(db, user_id=user_id)
             if not patient:
                 raise HTTPException(status_code=404, detail="Patient profile not found.")
-            return patient
+            return schemas.Patient.from_orm(patient)
 
     except HTTPException:
         raise
@@ -202,6 +205,23 @@ def get_doctor_profile(user_id: int, db: Session = Depends(get_db), request: Req
         doctor.profile_image_url = None
 
     return doctor
+@router.get("/patientdetails/{user_id}")
+def get_patient_profile(user_id: int, db: Session = Depends(get_db)):
+    patient = crud.get_patient_by_user_id(db, user_id=user_id)
+    print("patient: ",patient)
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found.")
+
+    return patient
+@router.get("/appointments")
+def get_appointment_status_route(
+    patient_id: int, 
+    doctor_id: int, 
+    db: Session = Depends(get_db)
+):
+    # Call the function to get the appointment status
+    appointment_status = crud.get_appointment_status(db, doctor_id, patient_id)
+    return appointment_status
 @router.get("/doctors")
 async def get_all_doctors(request: Request, db: Session = Depends(get_db)):
     doctors = crud.get_all_doctors(db)

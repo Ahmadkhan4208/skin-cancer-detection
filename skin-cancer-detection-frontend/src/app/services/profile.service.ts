@@ -21,20 +21,23 @@ export class ProfileService {
     const formData = new FormData();
   
     // Append each field explicitly
+    formData.append('user_name', profileData.user_name);
     if (role === 'doctor') {
-      formData.append('user_name', profileData.user_name);
       formData.append('specialty', profileData.specialty);
       formData.append('hospital', profileData.hospital);
       formData.append('years_experience', profileData.years_experience.toString());
     }
-  
+    if (role === "patient") {
+      const formattedDob = new Date(profileData.dob).toISOString().split('T')[0]; 
+      formData.append('dob', formattedDob);
+    }
     formData.append('contact', profileData.contact);
   
     // Append the image if it exists
     if (profileImage) {
       formData.append('profile_image', profileImage, profileImage.name);
     }
-  
+    console.log([...formData.entries()]);
     return this.http.post(
       `${this.apiUrl}/complete-profile/${userId}`,
       formData,
@@ -46,6 +49,11 @@ export class ProfileService {
   getDoctorProfile(userId: number): Observable<any> {
     return this.http.get(
         `${this.apiUrl}/doctordetails/${userId}`
+    )
+  }
+  getPatientProfile(userId: number): Observable<any> {
+    return this.http.get(
+        `${this.apiUrl}/patientdetails/${userId}`
     )
   }
 }

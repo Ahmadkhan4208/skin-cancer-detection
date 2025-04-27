@@ -60,6 +60,7 @@ export class DoctorConsultationComponent implements OnInit {
   }
 
   getButtonText(): string {
+
     switch (this.buttonState) {
       case 'book':
         return 'Book Appointment';
@@ -95,7 +96,7 @@ export class DoctorConsultationComponent implements OnInit {
       doctorId
     ).subscribe({
       next: (appointments) => {
-        this.existingAppointment = appointments[0] || null;
+        this.existingAppointment = appointments.length > 0 ? appointments[0] : null;
         this.checkRatingRequirement();
         this.isLoading = false;
       },
@@ -107,9 +108,10 @@ export class DoctorConsultationComponent implements OnInit {
     });
   }
 
+
   private checkRatingRequirement(): void {
     if (this.existingAppointment?.status === 'confirmed') {
-      this.ratingService.hasRated(this.existingAppointment.id).subscribe({
+      this.ratingService.hasRated(this.existingAppointment.appointment_id).subscribe({
         next: (hasRated) => this.isRatingRequired = !hasRated,
         error: (err) => {
           console.error('Error checking rating status:', err);
@@ -162,7 +164,7 @@ export class DoctorConsultationComponent implements OnInit {
   openRatingDialog(): void {
     const dialogRef = this.dialog.open(RatingModalComponent, {
       width: '300px',
-      data: { doctorId: this.doctor.id, appointmentId: this.existingAppointment?.id }
+      data: { doctorId: this.doctor.id, appointmentId: this.existingAppointment?.appointment_id }
     });
 
     dialogRef.afterClosed().subscribe((rating: number) => {
@@ -175,7 +177,7 @@ export class DoctorConsultationComponent implements OnInit {
   private submitRating(ratingValue: number): void {
     this.isLoading = true;
     const rating = {
-      appointment_id: this.existingAppointment!.id,
+      appointment_id: this.existingAppointment!.appointment_id,
       doctor_id: this.doctor.id,
       patient_id: this.currentPatientId,
       rating: ratingValue,

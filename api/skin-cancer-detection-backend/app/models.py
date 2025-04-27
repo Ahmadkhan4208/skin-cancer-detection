@@ -146,9 +146,9 @@ class Patient(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    full_name = Column(String)
-    date_of_birth = Column(Date)
-    phone = Column(String)
+    user_name = Column(String)
+    dob = Column(Date)
+    contact = Column(String)
     
     # Relationships
     user = relationship("User", back_populates="patient_profile")
@@ -190,7 +190,8 @@ class PredictionHistory(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, index=True)
     image_path = Column(String)  # or store the image in binary
-    prediction_result = Column(String)  # could be JSON string
+    predicted_class = Column(String)  # could be JSON string
     predicted_at = Column(DateTime, default=datetime.utcnow)
     confidence = Column(Float)
-    is_benign = Column(Boolean)
+    conclusion = Column(String)
+    description = Column(String)

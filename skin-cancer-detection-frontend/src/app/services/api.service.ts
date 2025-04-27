@@ -22,15 +22,17 @@ export class ApiService {
     });
   }
 
-  analyzeImage(imageFile: File): Observable<any> {
-    console.log('Uploading file:', imageFile.name, imageFile.type, imageFile.size); // Keep your debug logging
-    
+  analyzeImage(imageFile: File, userId: any): Observable<any> {
+    console.log('Uploading file:', imageFile.name, imageFile.type, imageFile.size);
+  
     const formData = new FormData();
-    formData.append('image', imageFile, imageFile.name); // Keep filename as 3rd param
-    
+    formData.append('image', imageFile, imageFile.name);  // Image
+    formData.append('user_id', userId.toString());        // User ID also
+  
     return this.http.post(`${this.apiUrl}/analyze`, formData, {
       headers: this.getHeaders(),
-      reportProgress: true // Keep progress tracking
+      reportProgress: true
     });
   }
+  
 }

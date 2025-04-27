@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { ResultsDisplayComponent } from '../results-display/results-display.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-image-upload',
@@ -30,7 +31,8 @@ export class ImageUploadComponent {
 
   constructor(
     private apiService: ApiService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {}
@@ -89,8 +91,8 @@ export class ImageUploadComponent {
   
     this.isLoading = true;
     this.showResults = false;
-    
-    this.apiService.analyzeImage(this.selectedFile).subscribe({
+    const userId = this.authService.getCurrentUserId();
+    this.apiService.analyzeImage(this.selectedFile,userId).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.showResults = true;

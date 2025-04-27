@@ -69,12 +69,13 @@ class Doctor(DoctorBase):
     user_id: int
     
     class Config:
+        orm_mode = True
         from_attributes = True
 
 class PatientBase(BaseModel):
-    full_name: str
-    date_of_birth: date
-    phone: str
+    user_name: str
+    dob: date
+    contact: str
 
 class PatientCreate(PatientBase):
     pass
@@ -84,6 +85,7 @@ class Patient(PatientBase):
     user_id: int
     
     class Config:
+        orm_mode = True
         from_attributes = True
 
 class AppointmentBase(BaseModel):
@@ -104,6 +106,7 @@ class Appointment(AppointmentBase):
     class Config:
         from_attributes = True
 
+
 # Add profile completion schemas
 class ProfileCompleteDoctor(BaseModel):
     user_name: str
@@ -113,6 +116,6 @@ class ProfileCompleteDoctor(BaseModel):
     contact: str
 
 class ProfileCompletePatient(BaseModel):
-    full_name: str
-    date_of_birth: date
-    phone: str
+    user_name: str
+    dob: date
+    contact: str

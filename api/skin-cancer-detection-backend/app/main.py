@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.security import OAuth2PasswordBearer
@@ -12,7 +12,7 @@ from app.models import load_model_h5, predict, Base
 from app.config import settings
 from app.database import engine, get_db
 from app.auth import router as auth_router
-from app.dependencies import get_current_user
+from . import crud
 
 # Initialize database tables and model
 @asynccontextmanager
@@ -63,8 +63,8 @@ def read_root():
 @app.post("/analyze", response_model=PredictionResult)
 async def analyze_image(
     image: UploadFile = File(..., description="An image file"),
-    # current_user: User = Depends(get_current_user),
-    # db: Session = Depends(get_db)
+    user_id: int = Form(...),  # <---- Receive user_id from form
+    db: Session = Depends(get_db)
 ):
     # Validate file type and size
     if not image.content_type.startswith('image/'):
@@ -92,7 +92,15 @@ async def analyze_image(
         
         # Here you could store the prediction in the database if you want
         # using the PredictionHistory model we created earlier
-        
+        crud.create_prediction_history(
+            db=db,
+            user_id=user_id,
+            image_path=file_path,
+            predicted_class=prediction["predicted_class"],
+            confidence=prediction["confidence"],
+            conclusion=prediction["conclusion"],
+            description=prediction["description"]
+        )
         return {
             "predicted_class": prediction["predicted_class"],
             "confidence": prediction["confidence"],
@@ -102,7 +110,3 @@ async def analyze_image(
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        # Clean up - remove the temporary file
-        if os.path.exists(file_path):
-            os.remove(file_path)

@@ -69,9 +69,12 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_doctor_by_user_id(db: Session, user_id: int):
     """Get doctor profile by user ID"""
     return db.query(models.Doctor).filter(models.Doctor.user_id == user_id).first()
+def get_patient_by_user_id(db: Session, user_id: int):
+    """Get doctor profile by user ID"""
+    return db.query(models.Patient).filter(models.Patient.user_id == user_id).first()
 
 async def complete_user_profile(
-    db: Session, 
+    db: Session,
     user_id: int,
     profile_data: Union[schemas.ProfileCompleteDoctor, schemas.ProfileCompletePatient],
     role: str,
@@ -83,46 +86,58 @@ async def complete_user_profile(
     
     if user.role != role:
         raise HTTPException(status_code=400, detail=f"User is not a {role}")
-    
+
+    # Handle profile image upload
+    image_url = None
+    if profile_image:
+        image_url = await save_uploaded_image(profile_image, user_id)
+
     if role == "doctor":
-        # Check if profile already exists
-        if db.query(models.Doctor).filter(models.Doctor.user_id == user_id).first():
-            raise HTTPException(status_code=400, detail="Doctor profile already exists")
+        doctor = db.query(models.Doctor).filter(models.Doctor.user_id == user_id).first()
         
-        # Handle profile image upload
-        image_url = None
-        if profile_image:
-            image_url = await save_uploaded_image(profile_image, user_id)
-        
-        # Create doctor profile
-        db_doctor = models.Doctor(
-            user_id=user_id,
-            user_name=profile_data.user_name,
-            specialty=profile_data.specialty,
-            hospital=profile_data.hospital,
-            years_experience=profile_data.years_experience,
-            contact=profile_data.contact,
-            rating=0.0,  # Default rating
-            profile_image_url=image_url
-        )
-        db.add(db_doctor)
-    
+        if doctor:
+            # Update existing doctor profile
+            doctor.user_name = profile_data.user_name
+            doctor.specialty = profile_data.specialty
+            doctor.hospital = profile_data.hospital
+            doctor.years_experience = profile_data.years_experience
+            doctor.contact = profile_data.contact
+            if image_url:
+                doctor.profile_image_url = image_url
+        else:
+            # Create new doctor profile
+            doctor = models.Doctor(
+                user_id=user_id,
+                user_name=profile_data.user_name,
+                specialty=profile_data.specialty,
+                hospital=profile_data.hospital,
+                years_experience=profile_data.years_experience,
+                contact=profile_data.contact,
+                rating=0.0,
+                profile_image_url=image_url
+            )
+            db.add(doctor)
+
     elif role == "patient":
-        # Check if profile already exists
-        if db.query(models.Patient).filter(models.Patient.user_id == user_id).first():
-            raise HTTPException(status_code=400, detail="Patient profile already exists")
-        
-        # Create patient profile
-        db_patient = models.Patient(
-            user_id=user_id,
-            full_name=profile_data.full_name,
-            date_of_birth=profile_data.date_of_birth,
-            phone=profile_data.phone
-        )
-        db.add(db_patient)
-    
+        patient = db.query(models.Patient).filter(models.Patient.user_id == user_id).first()
+
+        if patient:
+            # Update existing patient profile
+            patient.full_name = profile_data.user_name
+            patient.dob = profile_data.dob
+            patient.contact = profile_data.contact
+        else:
+            # Create new patient profile
+            patient = models.Patient(
+                user_id=user_id,
+                full_name=profile_data.user_name,
+                dob=profile_data.dob,
+                contact=profile_data.contact
+            )
+            db.add(patient)
+
     db.commit()
-    return {"message": f"{role.capitalize()} profile created successfully"}
+    return {"message": f"{role.capitalize()} profile saved successfully"}
 
 async def save_uploaded_image(file: UploadFile, user_id: int) -> str:
     """Save uploaded image and return the file path"""
@@ -157,3 +172,47 @@ def update_doctor_profile_image(db: Session, user_id: int, image_url: str):
     db.commit()
     db.refresh(doctor)
     return doctor
+
+def get_appointment_status(db: Session, doctor_id: int, patient_id: int):
+    """Get all appointments between a doctor and patient, latest first (sorted by date_time)"""
+    appointments = db.query(models.Appointment).filter(
+        models.Appointment.doctor_id == doctor_id,
+        models.Appointment.patient_id == patient_id
+    ).order_by(models.Appointment.date_time.desc()).all()  # Sort by date_time latest first
+
+    if appointments:
+        # Return list of dicts
+        return [
+            {
+                "status": appointment.status,
+                "appointment_id": appointment.id,
+                "date_time": appointment.date_time
+            }
+            for appointment in appointments
+        ]
+    else:
+        return []
+    
+def create_prediction_history(
+    db: Session,
+    user_id: int,
+    image_path: str,
+    predicted_class: str,
+    confidence: float,
+    conclusion: str,
+    description: str
+):
+    prediction_entry = models.PredictionHistory(
+        user_id=user_id,
+        image_path=image_path,
+        predicted_class=predicted_class,
+        predicted_at=datetime.utcnow(),  # 🛑 Explicitly set current time
+        confidence=confidence,
+        conclusion=conclusion,
+        description=description
+    )
+    db.add(prediction_entry)
+    db.commit()
+    db.refresh(prediction_entry)
+    return prediction_entry
+
