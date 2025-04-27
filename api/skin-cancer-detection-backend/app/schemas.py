@@ -79,6 +79,11 @@ class PatientBase(BaseModel):
 
 class PatientCreate(PatientBase):
     pass
+class AppointmentCreateRequest(BaseModel):
+    patient_id: int
+    doctor_id: int
+    date_time: datetime
+    notes: Optional[str] = None
 
 class Patient(PatientBase):
     id: int

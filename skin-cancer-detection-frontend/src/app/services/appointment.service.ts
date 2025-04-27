@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Appointment, AppointmentCreate } from '../models/appointment.model';
 
@@ -14,8 +15,22 @@ export class AppointmentService {
   constructor(private http: HttpClient) { }
 
   // Create a new appointment
-  createAppointment(appointment: AppointmentCreate): Observable<Appointment> {
-    return this.http.post<Appointment>(this.apiUrl, appointment);
+  createAppointment(appointment: any): Observable<any> {
+    console.log('Creating appointment:', appointment);
+    const formData = new FormData();
+    formData.append('patient_id', appointment.patient_id.toString());
+    formData.append('doctor_id', appointment.doctor_id.toString());
+    formData.append('date_time', appointment.date_time);
+    if (appointment.notes) {
+      formData.append('notes', appointment.notes);
+    }
+    console.log([...formData.entries()]);
+    return this.http.post<any>(this.apiUrl, formData).pipe(
+      catchError(error => {
+        console.error('API Error:', error);
+        throw error;
+      })
+    );
   }
 
   // Get appointments between a specific patient and doctor

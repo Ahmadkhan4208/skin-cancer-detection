@@ -216,3 +216,23 @@ def create_prediction_history(
     db.refresh(prediction_entry)
     return prediction_entry
 
+def create_appointment(
+    db: Session,
+    patient_id: int,
+    doctor_id: int,
+    date_time: datetime,
+    notes: Optional[str] = None
+):
+    """Create a new appointment in the database."""
+    new_appointment = models.Appointment(
+        patient_id=patient_id,
+        doctor_id=doctor_id,
+        date_time=date_time,
+        notes=notes,
+        status="pending"  # Default status
+    )
+    db.add(new_appointment)
+    db.commit()
+    db.refresh(new_appointment)
+    return new_appointment
+

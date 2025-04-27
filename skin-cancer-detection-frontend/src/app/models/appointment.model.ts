@@ -1,7 +1,8 @@
 // appointment.model.ts
 export interface AppointmentBase {
+    patient_id: number;
     doctor_id: number;
-    date_time: Date;
+    date_time: string;
     notes?: string;
   }
   

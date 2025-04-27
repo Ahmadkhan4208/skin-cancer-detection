@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatError } from '@angular/material/form-field';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-doctor-consultation',
@@ -27,7 +28,8 @@ import { MatError } from '@angular/material/form-field';
     MatFormFieldModule,
     MatButtonModule,
     MatCardModule,
-    MatError
+    MatError,
+    RouterModule
   ]
 })
 export class DoctorConsultationComponent implements OnInit {

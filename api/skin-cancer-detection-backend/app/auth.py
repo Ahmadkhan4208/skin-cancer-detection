@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 import random
 from passlib.context import CryptContext
 import os
+import yagmail
 
 from .config import settings
 from . import schemas, crud, models
@@ -96,6 +97,26 @@ async def send_verification(
         raise HTTPException(status_code=400, detail="Email already registered")
     
     code = generate_verification_code(request.email)
+    yag = yagmail.SMTP(user="your_email@gmail.com", password="your_app_password")
+    subject = "Verification Code - Skin Cancer Detection App"
+    body = f"""
+        Dear User,
+
+        Your verification code for Skin Cancer Detection App is: {code}
+
+        Please enter this code to verify your email address.
+
+        Regards,
+        Skin Cancer Detection Team
+    """
+    try:
+        yag.send(
+            to=request.email,
+            subject=subject,
+            contents=body
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to send verification email: {e}")
     print(f"Verification code for {request.email}: {code}")
     return {"message": "Verification code sent"}
 
@@ -129,6 +150,36 @@ async def register(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
+from datetime import datetime
+
+@router.post("/appointments")
+def create_appointment_endpoint(
+    patient_id: int = Form(...),
+    doctor_id: int = Form(...),
+    date_time: str = Form(...),
+    notes: str = Form(None),
+    db: Session = Depends(get_db)
+):
+    """Endpoint to create a new appointment."""
+    try:
+        print("create appointment endpoint called")
+        # Convert date_time string to a Python datetime object
+        
+        parsed_datetime = datetime.fromisoformat(date_time.replace("Z", "+00:00"))
+
+        new_appointment = crud.create_appointment(
+            db=db,
+            patient_id=patient_id,
+            doctor_id=doctor_id,
+            date_time=parsed_datetime,  # Pass the parsed datetime object
+            notes=notes
+        )
+        print("new appointment: ", new_appointment)
+        return new_appointment
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=f"Invalid date_time format: {str(ve)}")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error creating appointment: {str(e)}")
 
 @router.post("/complete-profile/{user_id}", response_model=Union[schemas.Doctor, schemas.Patient])
 async def complete_profile(
