@@ -38,7 +38,7 @@
         
         <div class="doctor-details">
           <mat-icon>star</mat-icon>
-          <span>Rating: {{ doctor.rating ? (doctor.rating | number:'1.1-1') : 'Not rated yet' }}</span>
+          <span>Rating: {{ doctor.rating ? (doctor.rating | number:'1.1-1') : 'Not rated yet' }} ({{ doctor.appointments_count }})</span>
         </div>
       </div>
   

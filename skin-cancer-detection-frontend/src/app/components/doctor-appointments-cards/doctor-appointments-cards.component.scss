@@ -1,0 +1,154 @@
+/* Modern Card Design */
+.appointment-card {
+    width: 100%;
+    max-width: 420px;
+    min-height: 180px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    margin: 0 auto 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+  
+    &.pending .card-accent {
+      background: linear-gradient(135deg, #FFA726 0%, #FB8C00 100%);
+    }
+    
+    &.booked .card-accent {
+      background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+    }
+  }
+  
+  .card-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 6px;
+    height: 100%;
+  }
+  
+  .card-content {
+    padding: 20px;
+    position: relative;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .appointment-meta {
+    display: flex;
+    flex-direction: column;
+    
+    .patient-id {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 4px;
+    }
+    
+    .appointment-date {
+      font-size: 13px;
+      color: #777;
+    }
+  }
+  
+  .status-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    &.pending {
+      background: #FFF3E0;
+      color: #E65100;
+    }
+    
+    &.booked {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+  }
+  
+  .appointment-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 20px;
+    line-height: 1.4;
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    
+    .confirm-btn {
+      background: linear-gradient(135deg, #FFA726 0%, #FB8C00 100%);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(251, 140, 0, 0.3);
+      }
+      
+      .icon {
+        width: 18px;
+        height: 18px;
+        fill: white;
+        margin-right: 8px;
+      }
+    }
+    
+    .booked-badge {
+      background: #E8F5E9;
+      color: #2E7D32;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      
+      .icon {
+        width: 18px;
+        height: 18px;
+        fill: #2E7D32;
+        margin-right: 8px;
+      }
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .appointment-card {
+      max-width: 100%;
+    }
+    
+    .card-content {
+      padding: 16px;
+    }
+    
+    .appointment-title {
+      font-size: 16px;
+    }
+  }

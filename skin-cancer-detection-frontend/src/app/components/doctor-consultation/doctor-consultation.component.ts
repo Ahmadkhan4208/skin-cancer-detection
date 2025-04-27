@@ -112,9 +112,9 @@ export class DoctorConsultationComponent implements OnInit {
 
 
   private checkRatingRequirement(): void {
-    if (this.existingAppointment?.status === 'confirmed') {
+    if (this.existingAppointment?.status === 'rate') {
       this.ratingService.hasRated(this.existingAppointment.appointment_id).subscribe({
-        next: (hasRated) => this.isRatingRequired = !hasRated,
+        next: (hasRated) => this.isRatingRequired = hasRated,
         error: (err) => {
           console.error('Error checking rating status:', err);
           this.errorMessage = 'Failed to check rating status.';
@@ -178,15 +178,9 @@ export class DoctorConsultationComponent implements OnInit {
 
   private submitRating(ratingValue: number): void {
     this.isLoading = true;
-    const rating = {
-      appointment_id: this.existingAppointment!.appointment_id,
-      doctor_id: this.doctor.id,
-      patient_id: this.currentPatientId,
-      rating: ratingValue,
-      comment: ''
-    };
+    const appointment_id = this.existingAppointment!.appointment_id;
 
-    this.ratingService.submitRating(rating).subscribe({
+    this.ratingService.submitRating(appointment_id,ratingValue).subscribe({
       next: () => {
         this.isRatingRequired = false;
         this.loadAppointments(this.doctor.id);

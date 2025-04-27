@@ -136,6 +136,7 @@ class Doctor(Base):
     years_experience = Column(Integer)
     contact = Column(String)
     profile_image_url = Column(String)  # Stores the path/URL to the image
+    appointments_count = Column(Integer, default=0)  # Number of appointments handled
     
     # Relationships
     user = relationship("User", back_populates="doctor_profile")

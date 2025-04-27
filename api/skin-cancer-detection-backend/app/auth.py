@@ -37,6 +37,31 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
 
+@router.post("/api/ratings/set_rating", response_model=float)
+async def submit_rating(
+    data: schemas.DoctorRatingUpdate,  # Using Pydantic model for request validation
+    db: Session = Depends(get_db)
+) -> float:
+    try:
+        print("submit rating endpoint called")
+        print("Data: ",data)        # Call the CRUD function
+        updated_doctor = crud.update_doctor_rating(
+            db=db,
+            appointment_id=data.appointment_id,
+            new_rating=data.rating
+        )
+        
+        if not updated_doctor:
+            raise HTTPException(status_code=404, detail="Doctor not found")
+        
+        return updated_doctor.rating
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+
 async def get_current_user(
     token: str,
     db: Session = Depends(get_db)
@@ -152,6 +177,8 @@ async def register(
         raise HTTPException(status_code=400, detail=str(e))
 from datetime import datetime
 
+
+
 @router.post("/appointments")
 def create_appointment_endpoint(
     patient_id: int = Form(...),
@@ -241,6 +268,36 @@ async def complete_profile(
         db.rollback()
         raise HTTPException(status_code=400, detail=f"Error completing profile: {e}")
 
+@router.patch("/appointments/{appointment_id}/status")
+def update_appointment_status(
+    appointment_id: int,
+    status: str = Body(..., embed=True),  # Note the embed=True
+    db: Session = Depends(get_db)
+):
+    print(f"Status update received: {status}")
+    return crud.update_appointment_status(db, appointment_id, status)
+
+@router.get("/api/ratings/has_rated", response_model=bool)
+async def has_rated_endpoint(
+    appointment_id: int = Query(..., description="The appointment ID to check"),
+    db: Session = Depends(get_db)
+):
+    """
+    Endpoint to check if a patient has rated a specific appointment.
+    Returns:
+        bool: True if the appointment has been rated, False otherwise
+    """
+    try:
+        print(f"Checking rating status for appointment: {appointment_id}")
+        return crud.has_patient_rated(db, appointment_id)
+    except ValueError as ve:
+        raise HTTPException(status_code=404, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail="Could not check rating status. Please try again later."
+        )
+    
 @router.get("/doctordetails/{user_id}", response_model=schemas.Doctor)
 def get_doctor_profile(user_id: int, db: Session = Depends(get_db), request: Request = None):
     doctor = crud.get_doctor_by_user_id(db, user_id=user_id)
@@ -254,8 +311,24 @@ def get_doctor_profile(user_id: int, db: Session = Depends(get_db), request: Req
         doctor.profile_image_url = f"{base_url}/uploads/doctors/{os.path.basename(doctor.profile_image_url)}"
     else:
         doctor.profile_image_url = None
-
+    
     return doctor
+
+@router.get("/appointments/doctor/{doctor_id}")
+def get_appointments_for_doctor_endpoint(
+    doctor_id: int,
+    db: Session = Depends(get_db)
+):
+    """Endpoint to retrieve all appointments for a specific doctor."""
+    try:
+        appointments = crud.get_appointments_for_doctor(db, doctor_id)
+        if not appointments:
+            raise HTTPException(status_code=404, detail="No appointments found for this doctor.")
+        print("appoinrments: ",appointments)
+        return appointments
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error retrieving appointments: {str(e)}")
+    
 @router.get("/patientdetails/{user_id}")
 def get_patient_profile(user_id: int, db: Session = Depends(get_db)):
     patient = crud.get_patient_by_user_id(db, user_id=user_id)

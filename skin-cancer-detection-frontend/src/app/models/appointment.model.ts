@@ -11,9 +11,9 @@ export interface AppointmentBase {
   }
   
   export interface Appointment extends AppointmentBase {
-    id: number;
+    appointment_id: number;
     patient_id: number;
-    status: 'pending' | 'confirmed' | 'cancelled';
+    status: 'pending' | 'book' | 'rate';
     doctor: Doctor;
     patient: Patient;
   }

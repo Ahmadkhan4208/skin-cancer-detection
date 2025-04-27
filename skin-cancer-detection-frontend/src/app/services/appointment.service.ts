@@ -45,9 +45,16 @@ export class AppointmentService {
     return this.http.get<Appointment[]>(`${this.apiUrl}?patient_id=${patientId}`);
   }
 
+  getDoctorAppointments(doctorId: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.apiUrl}/doctor/${doctorId}`);
+  }
+
   // Update an appointment
-  updateAppointment(id: number, updates: Partial<Appointment>): Observable<Appointment> {
-    return this.http.patch<Appointment>(`${this.apiUrl}/${id}`, updates);
+  updateAppointmentStatus(appointmentId: number, status: string) {
+    return this.http.patch<Appointment>(
+      `${this.apiUrl}/${appointmentId}/status`,
+      { status: status }  // Explicit property name
+    );
   }
 
   // Cancel an appointment

@@ -1,0 +1,39 @@
+<div *ngFor="let appointment of appointments" class="appointment-card" 
+     [class.pending]="appointment.status === 'pending'"
+     [class.booked]="appointment.status === 'book' || 'rate'">
+  
+  <div class="card-accent"></div>
+  
+  <div class="card-content">
+    <div class="card-header">
+      <div class="appointment-meta">
+        <span class="patient-id">#{{appointment.patient_id}}</span>
+        <span class="appointment-date">{{appointment.date_time | date:'MMM d, y, h:mm a'}}</span>
+      </div>
+      <div class="status-pill" [class.pending]="appointment.status === 'pending'"
+                             [class.booked]="appointment.status === 'book' || 'rate'">
+        {{appointment.status === 'pending' ? 'Pending' : 'Booked'}}
+      </div>
+    </div>
+
+    <h3 class="appointment-title">{{appointment.notes || 'Medical Appointment'}}</h3>
+
+    <div class="card-actions">
+      <button *ngIf="appointment.status === 'pending'" 
+              (click)="confirmAppointment(appointment.appointment_id)"
+              class="confirm-btn">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+        </svg>
+        Confirm Booking
+      </button>
+      
+      <div *ngIf="appointment.status === 'book' || 'rate'" class="booked-badge">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12,2C6.48,2 2,6.48 2,12s4.48,10 10,10 10-4.48 10-10S17.52,2 12,2zm-2,15l-5-5 1.41-1.41L10,14.17l7.59-7.59L19,8l-9,9z"/>
+        </svg>
+        Appointment Booked
+      </div>
+    </div>
+  </div>
+</div>

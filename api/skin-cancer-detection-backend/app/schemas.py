@@ -60,10 +60,13 @@ class DoctorBase(BaseModel):
     contact: str
     rating: Optional[float] = None  # Make rating optional
     profile_image_url: str
+    appointments_count: int = 0  # Number of appointments handled
 
 class DoctorCreate(DoctorBase):
     pass
-
+class DoctorRatingUpdate(BaseModel):
+    appointment_id: int
+    rating: float
 class Doctor(DoctorBase):
     id: int
     user_id: int

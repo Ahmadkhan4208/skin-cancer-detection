@@ -36,7 +36,8 @@ def get_all_doctors(db: Session):
             "hospital": doctor.hospital,
             "years_experience": doctor.years_experience,
             "contact": doctor.contact,
-            "profile_image_url": doctor.profile_image_url
+            "profile_image_url": doctor.profile_image_url,
+            "appointments_count": doctor.appointments_count,
         }
         doctor_list.append(doctor_data)
 
@@ -216,6 +217,40 @@ def create_prediction_history(
     db.refresh(prediction_entry)
     return prediction_entry
 
+def update_appointment_status(db: Session, appointment_id: int, status: str):
+    """Update the status of an appointment by its ID."""
+    appointment = db.query(models.Appointment).filter(models.Appointment.id == appointment_id).first()
+    
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+    
+    appointment.status = status
+    db.commit()
+    db.refresh(appointment)
+    
+    return {
+        "appointment_id": appointment.id,
+        "status": appointment.status,
+        "message": "Appointment status updated successfully"
+    }
+
+def get_appointments_for_doctor(db: Session, doctor_id: int):
+    """Retrieve all appointments for a specific doctor."""
+    appointments = db.query(models.Appointment).filter(
+        models.Appointment.doctor_id == doctor_id
+    ).order_by(models.Appointment.date_time.asc()).all()  # Sort by date_time ascending
+
+    return [
+        {
+            "appointment_id": appointment.id,
+            "patient_id": appointment.patient_id,
+            "date_time": appointment.date_time,
+            "notes": appointment.notes,
+            "status": appointment.status
+        }
+        for appointment in appointments
+    ]
+
 def create_appointment(
     db: Session,
     patient_id: int,
@@ -235,4 +270,46 @@ def create_appointment(
     db.commit()
     db.refresh(new_appointment)
     return new_appointment
+
+def has_patient_rated(db: Session, appointment_id: int) -> bool:
+    """Check if a patient has rated a specific appointment based on the status field."""
+    status = db.query(models.Appointment.status).filter(models.Appointment.id == appointment_id).scalar()
+    return status == "rate"
+
+def update_doctor_rating(db: Session, appointment_id: int, new_rating: float):
+    # Get the appointment with the associated doctor
+    appointment = db.query(models.Appointment).\
+        join(models.Doctor, models.Appointment.doctor_id == models.Doctor.id).\
+        filter(models.Appointment.id == appointment_id).\
+        first()
+
+    if not appointment or not appointment.doctor:
+        return None
+    
+    try:
+        doctor = appointment.doctor
+        
+        # Increment appointments by 1
+        doctor.appointments_count += 1
+        
+        # Calculate new average rating
+        if doctor.rating is None:  # First rating
+            doctor.rating = new_rating
+        else:
+            # New average = (current_rating * (appointments-1) + new_rating) / appointments
+            doctor.rating = (doctor.rating * (doctor.appointments_count - 1) + new_rating)
+            doctor.rating /= doctor.appointments_count
+        
+        # Update appointment status to 'booked'
+        appointment.status = "book"
+        
+        # Commit all changes to database
+        db.commit()
+        db.refresh(doctor)
+        
+        return doctor
+    except Exception as e:
+        db.rollback()
+        raise e
+
 
