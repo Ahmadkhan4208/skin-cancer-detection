@@ -2,7 +2,7 @@
     "version": 2,
     "builds": [
       {
-        "src": "dist/skin-cancer-detection/**",
+        "src": "dist/skin-cancer-detection/browser/**",
         "use": "@vercel/static"
       }
     ],
