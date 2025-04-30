@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "ng serve", 
-    "build": "ng build",
-    "build:ssr": "ng build && ng run skin-cancer-detection:server",
-    "serve:ssr": "node dist/skin-cancer-detection/server/server.mjs",
-    "install-frontend-dependencies": "npm install",
+    "start": "ng serve",
+    "build": "ng build --configuration production",
     "deploy": "vercel --prod"
   },
   "dependencies": {
@@ -20,11 +17,8 @@
     "@angular/material": "^19.2.9",
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
-    "@angular/platform-server": "^19.2.0",
     "@angular/router": "^19.2.0",
-    "@angular/ssr": "^19.2.6",
     "@syncfusion/ej2-angular-calendars": "^29.1.39",
-    "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -33,7 +27,6 @@
     "@angular-devkit/build-angular": "^19.2.6",
     "@angular/cli": "^19.2.6",
     "@angular/compiler-cli": "^19.2.0",
-    "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "jasmine-core": "~5.6.0",
