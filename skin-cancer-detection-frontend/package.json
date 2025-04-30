@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "cd skin-cancer-detection-frontend && npm run start", 
-    "build": "cd skin-cancer-detection-frontend && npm run build",
-    "install-frontend-dependencies": "cd skin-cancer-detection-frontend && npm install",
-    "install-backend-dependencies": "cd api/skin-cancer-detection-backend && pip install -r requirements.txt",
-    "start-backend": "cd api/skin-cancer-detection-backend && uvicorn app.main:app --reload --port 8000",
+    "start": "npm run start", 
+    "build": "npm run build",
+    "install-frontend-dependencies": "npm install",
     "deploy": "vercel --prod"
   },
   "dependencies": {

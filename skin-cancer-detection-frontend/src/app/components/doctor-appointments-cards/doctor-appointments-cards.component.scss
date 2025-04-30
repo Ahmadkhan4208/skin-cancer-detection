@@ -1,27 +1,29 @@
 /* Modern Card Design */
 .appointment-card {
     width: 100%;
-    max-width: 420px;
-    min-height: 180px;
+    max-width: 600px; // Increased from 420px for more width
+    min-height: 200px; // Slightly taller
     background: white;
     border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    margin: 0 auto 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 30px;
     position: relative;
     overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
     &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     }
   
     &.pending .card-accent {
       background: linear-gradient(135deg, #FFA726 0%, #FB8C00 100%);
+      width: 8px; // Slightly wider accent
     }
     
     &.booked .card-accent {
       background: linear-gradient(135deg, #66BB6A 0%, #43A047 100%);
+      width: 8px; // Slightly wider accent
     }
   }
   
@@ -29,12 +31,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 6px;
+    width: 8px;
     height: 100%;
   }
   
   .card-content {
-    padding: 20px;
+    padding: 28px 30px; // Increased padding
     position: relative;
   }
   
@@ -42,7 +44,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 22px; // More space
   }
   
   .appointment-meta {
@@ -50,25 +52,26 @@
     flex-direction: column;
     
     .patient-id {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
-      color: #555;
-      margin-bottom: 4px;
+      color: #444;
+      margin-bottom: 6px;
     }
     
     .appointment-date {
-      font-size: 13px;
-      color: #777;
+      font-size: 14px;
+      color: #666;
+      letter-spacing: 0.3px;
     }
   }
   
   .status-pill {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 8px 16px; // Larger pill
+    border-radius: 25px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.7px;
     
     &.pending {
       background: #FFF3E0;
@@ -82,11 +85,11 @@
   }
   
   .appointment-title {
-    font-size: 18px;
+    font-size: 20px; // Larger font
     font-weight: 600;
     color: #333;
-    margin: 0 0 20px;
-    line-height: 1.4;
+    margin: 0 0 26px;
+    line-height: 1.5;
   }
   
   .card-actions {
@@ -97,58 +100,76 @@
       background: linear-gradient(135deg, #FFA726 0%, #FB8C00 100%);
       color: white;
       border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 12px 22px; // Larger button
+      border-radius: 10px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 15px;
       display: flex;
       align-items: center;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
       
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(251, 140, 0, 0.3);
+        box-shadow: 0 6px 12px rgba(251, 140, 0, 0.3);
       }
       
       .icon {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         fill: white;
-        margin-right: 8px;
+        margin-right: 10px;
       }
     }
     
     .booked-badge {
       background: #E8F5E9;
       color: #2E7D32;
-      padding: 10px 16px;
-      border-radius: 8px;
+      padding: 12px 22px; // Larger badge
+      border-radius: 10px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 15px;
       display: flex;
       align-items: center;
       
       .icon {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         fill: #2E7D32;
-        margin-right: 8px;
+        margin-right: 10px;
       }
     }
   }
   
   /* Responsive Design */
+  @media (max-width: 768px) {
+    .appointment-card {
+      max-width: 90%;
+      min-height: 180px;
+    }
+    
+    .card-content {
+      padding: 22px 25px;
+    }
+  }
+  
   @media (max-width: 480px) {
     .appointment-card {
       max-width: 100%;
     }
     
     .card-content {
-      padding: 16px;
+      padding: 18px;
     }
     
     .appointment-title {
-      font-size: 16px;
+      font-size: 17px;
+      margin-bottom: 20px;
+    }
+    
+    .card-actions .confirm-btn,
+    .card-actions .booked-badge {
+      padding: 10px 16px;
+      font-size: 14px;
     }
   }

@@ -1,31 +1,50 @@
 <div class="app-container">
-  <header>
-    <h1>Skin Cancer Detection</h1>
-    <div class="auth-actions" *ngIf="isAuthenticated$ | async">
+  <header class="professional-header">
+    <div class="header-content">
+      <div class="logo-container">
+        <h1>Skin Cancer Detection</h1>
+        <div class="logo-subtitle">AI-Powered Diagnostic Assistant</div>
+      </div>
       
-      <!-- Profile Button (Always visible when authenticated) -->
-      <button mat-icon-button [matMenuTriggerFor]="profileMenu" class="profile-button">
-        <mat-icon class="user-icon">account_circle</mat-icon>
-      </button>
-      
-      <mat-menu #profileMenu="matMenu">
-        <div class="profile-header">
-          <mat-icon>account_circle</mat-icon>
-          <div class="profile-info">
-            <div class="username">{{ getUsername(userEmail$ | async) }}</div>
-            <div class="user-role">{{ userRole$ | async | titlecase }}</div>
-          </div>
+      <div class="auth-actions" *ngIf="isAuthenticated$ | async">
+        <!-- New Navigation Buttons -->
+        <div class="nav-buttons">
+          <button mat-stroked-button routerLink="/analyze" class="nav-button" routerLinkActive="active">
+            <mat-icon>search</mat-icon>
+            Analyze
+          </button>
+          <button mat-stroked-button routerLink="/doctor-appointments-cards" class="nav-button" routerLinkActive="active">
+            <mat-icon>calendar_today</mat-icon>
+            Appointments
+          </button>
         </div>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="openProfile()">
-          <mat-icon>edit</mat-icon>
-          Update Profile
-        </button>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          Logout
-        </button>
-      </mat-menu>
+        
+        <!-- Profile Button with Menu -->
+        <div class="profile-section">
+          <button mat-stroked-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+            <mat-icon class="user-icon">account_circle</mat-icon>
+          </button>
+          
+          <mat-menu #profileMenu="matMenu" class="profile-dropdown">
+            <div class="profile-header">
+              <mat-icon>account_circle</mat-icon>
+              <div class="profile-info">
+                <div class="username">{{ getUsername(userEmail$ | async) }}</div>
+                <div class="user-role">{{ userRole$ | async | titlecase }}</div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="openProfile()">
+              <mat-icon>edit</mat-icon>
+              <span>Update Profile</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Logout</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -33,7 +52,14 @@
     <router-outlet></router-outlet>
   </main>
 
-  <footer>
-    <p>For educational purposes only. Consult a healthcare professional for medical advice.</p>
+  <footer class="professional-footer">
+    <div class="footer-content">
+      <p>For educational purposes only. Consult a healthcare professional for medical advice.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
   </footer>
 </div>
