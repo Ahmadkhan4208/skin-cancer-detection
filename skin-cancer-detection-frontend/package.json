@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "npm run start", 
-    "build": "npm run build",
+    "start": "ng serve", 
+    "build": "ng build",
+    "build:ssr": "ng build && ng run skin-cancer-detection:server",
+    "serve:ssr": "node dist/skin-cancer-detection/server/server.mjs",
     "install-frontend-dependencies": "npm install",
     "deploy": "vercel --prod"
   },
