@@ -308,7 +308,7 @@ def get_doctor_profile(user_id: int, db: Session = Depends(get_db), request: Req
     if doctor.profile_image_url:
         base_url = str(request.base_url).rstrip("/")
         # Ensure the path is correct by just joining the file name with the base URL
-        doctor.profile_image_url = f"{base_url}/uploads/doctors/{os.path.basename(doctor.profile_image_url)}"
+        doctor.profile_image_url = f"{base_url}/{os.path.basename(doctor.profile_image_url)}"
     else:
         doctor.profile_image_url = None
     
@@ -358,7 +358,7 @@ async def get_all_doctors(request: Request, db: Session = Depends(get_db)):
     for doctor in doctors:
         if doctor.get("profile_image_url"):
             filename = os.path.basename(doctor["profile_image_url"])
-            doctor["profile_image_url"] = f"{base_url}/uploads/doctors/{filename}"
+            doctor["profile_image_url"] = f"{base_url}/{filename}"
 
     return doctors
 @router.post("/token", response_model=schemas.Token)
