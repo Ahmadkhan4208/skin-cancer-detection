@@ -19,7 +19,9 @@ from . import crud
 async def lifespan(app: FastAPI):
     # Create database tables
     Base.metadata.create_all(bind=engine)
-    
+    for route in app.routes:
+        if hasattr(route, "path"):
+            print(f"{route.path} -> {getattr(route, 'methods', None)}")
     # Load ML model
     global model
     model = load_model_h5()
