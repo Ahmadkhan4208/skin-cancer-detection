@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     allowed_origins: list = [
         "http://localhost",
         "http://localhost:4200",  # Angular default port
+        "https://skin-cancer-detection-production-3d57.up.railway.app",
     ]
     
     
