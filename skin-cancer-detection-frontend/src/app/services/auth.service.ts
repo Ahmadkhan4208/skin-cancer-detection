@@ -99,6 +99,7 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
+    console.log(this.apiUrl)
     const formData = new FormData();
     formData.append('username', email);
     formData.append('password', password);
