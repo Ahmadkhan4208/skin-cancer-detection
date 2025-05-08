@@ -8,6 +8,7 @@ import random
 from passlib.context import CryptContext
 import os
 import yagmail
+from dotenv import load_dotenv
 
 from .config import settings
 from . import schemas, crud, models
@@ -21,6 +22,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 # In-memory storage for verification codes (use database in production)
 verification_codes: Dict[str, Dict[str, Any]] = {}
+
+load_dotenv()
 
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
@@ -122,7 +125,9 @@ async def send_verification(
         raise HTTPException(status_code=400, detail="Email already registered")
     
     code = generate_verification_code(request.email)
-    yag = yagmail.SMTP(user="your_email@gmail.com", password="your_app_password")
+    EMAIL_USER = os.getenv("EMAIL_USER")
+    EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+    yag = yagmail.SMTP(user=EMAIL_USER, password=EMAIL_PASSWORD)
     subject = "Verification Code - Skin Cancer Detection App"
     body = f"""
         Dear User,
@@ -141,6 +146,7 @@ async def send_verification(
             contents=body
         )
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=f"Failed to send verification email: {e}")
     print(f"Verification code for {request.email}: {code}")
     return {"message": "Verification code sent"}

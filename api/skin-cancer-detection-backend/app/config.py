@@ -13,7 +13,8 @@ class Settings(BaseSettings):
         "http://localhost:4200",  # Angular default port
         "https://skin-cancer-detection-production-3d57.up.railway.app",
     ]
-    
+    EMAIL_USER: str = ""
+    EMAIL_PASSWORD: str = ""
     
     class Config:
         env_file = ".env"
