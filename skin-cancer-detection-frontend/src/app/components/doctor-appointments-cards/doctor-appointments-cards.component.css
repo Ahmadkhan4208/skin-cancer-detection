@@ -1,0 +1,531 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background: linear-gradient(135deg, #141e30, #1a1a2e);
+  min-height: 100vh;
+}
+
+/* Container for all cards with 3D perspective */
+:host {
+  perspective: 2000px;
+}
+
+/* Card main styling with glass morphism and advanced effects */
+.appointment-card {
+  position: relative;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+  background: rgba(30, 30, 46, 0.7);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+  transform: translateZ(0) rotateX(0deg);
+}
+
+/* Incredible hover effect with 3D rotation */
+.appointment-card:hover {
+  transform: translateY(-10px) translateZ(10px) rotateX(2deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+              0 0 30px rgba(66, 165, 245, 0.15);
+}
+
+/* Create a dynamic floating animation for cards */
+@keyframes floatCard {
+  0% { transform: translateY(0) translateZ(0) rotateX(0deg); }
+  50% { transform: translateY(-5px) translateZ(5px) rotateX(1deg); }
+  100% { transform: translateY(0) translateZ(0) rotateX(0deg); }
+}
+
+/* Apply animation to the cards with staggered delays */
+.appointment-card:nth-child(3n+1) {
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+.appointment-card:nth-child(3n+2) {
+  animation: floatCard 7s ease-in-out infinite 1s;
+}
+
+.appointment-card:nth-child(3n+3) {
+  animation: floatCard 8s ease-in-out infinite 2s;
+}
+
+/* Amazing liquid accent effect */
+.card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #42a5f5, #1976d2, #64b5f6);
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease infinite;
+  z-index: 1;
+}
+
+/* Pending card accent variation with warmer colors */
+.pending .card-accent {
+  background: linear-gradient(90deg, #ff9800, #ff5722, #ff9800);
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Add a glow effect to the accent */
+.card-accent::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: inherit;
+  filter: blur(10px);
+  opacity: 0.7;
+  z-index: -1;
+}
+
+/* Main content area */
+.card-content {
+  position: relative;
+  padding: 1.5rem;
+  z-index: 2;
+}
+
+/* Card header with modern layout */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+/* Appointment meta information */
+.appointment-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Patient ID with cyberpunk-style design */
+.patient-id {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+  border-left: 2px solid #42a5f5;
+}
+
+.pending .patient-id {
+  border-left-color: #ff9800;
+}
+
+/* Appointment date with elegant design */
+.appointment-date {
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Add calendar icon before date */
+.appointment-date::before {
+  content: '🗓️';
+  margin-right: 0.4rem;
+  font-size: 0.9rem;
+}
+
+/* Status pill with dynamic color and effects */
+.status-pill {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+  z-index: -1;
+}
+
+.status-pill.pending {
+  background-color: rgba(255, 152, 0, 0.15);
+  color: #ffa726;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  animation: pulseOrange 2s infinite;
+}
+
+.status-pill.booked {
+  background-color: rgba(66, 165, 245, 0.15);
+  color: #64b5f6;
+  border: 1px solid rgba(66, 165, 245, 0.3);
+}
+
+@keyframes pulseOrange {
+  0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+}
+
+/* Appointment title with modern typography */
+.appointment-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem 0 1.5rem;
+  position: relative;
+  /* Text gradient effect */
+  background: linear-gradient(90deg, white, #e0e0e0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Card actions area */
+.card-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Confirm button with advanced effects */
+.confirm-btn {
+  background: linear-gradient(135deg, #42a5f5, #1976d2);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+}
+
+/* Create a shimmering effect */
+.confirm-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.75s ease;
+}
+
+.confirm-btn:hover::before {
+  left: 100%;
+}
+
+.confirm-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+}
+
+/* Booked badge with celebratory design */
+.booked-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64b5f6;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: rgba(66, 165, 245, 0.1);
+  border: 1px dashed rgba(66, 165, 245, 0.3);
+  position: relative;
+}
+
+/* Add a subtle confetti effect to the booked badge */
+.booked-badge::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 30px;
+  background-image: 
+    radial-gradient(circle, #64b5f6 2px, transparent 2px),
+    radial-gradient(circle, #1976d2 1px, transparent 1px),
+    radial-gradient(circle, #42a5f5 3px, transparent 3px);
+  background-size: 30px 30px;
+  background-position: 0 0, 10px 10px, 20px 5px;
+  filter: opacity(0);
+  animation: confetti 3s forwards;
+}
+
+@keyframes confetti {
+  0% { filter: opacity(0); transform: translateY(-10px) translateX(-50%); }
+  10% { filter: opacity(1); }
+  100% { filter: opacity(0); transform: translateY(10px) translateX(-50%); }
+}
+
+/* SVG icon styling */
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Add a notification dot for pending appointments */
+.pending::after {
+  content: '';
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 10px;
+  height: 10px;
+  background-color: #ff9800;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff9800;
+  animation: pulse 1.5s infinite;
+  z-index: 10;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+}
+
+/* Apply a highlight on card click */
+.appointment-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Add a signature watermark to each card */
+.appointment-card::after {
+  content: '📅';
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  opacity: 0.1;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+
+/* Easter egg: Add hidden message that appears on hover */
+.card-content::before {
+  content: 'Priority Patient';
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1.5rem;
+  color: rgba(255, 255, 255, 0);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+.appointment-card:hover .card-content::before {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Apply unique patterns to differentiate cards subtly */
+.appointment-card:nth-child(odd) {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.appointment-card:nth-child(even) {
+  background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.02) 50%, rgba(255, 255, 255, 0.02) 75%, transparent 75%, transparent);
+  background-size: 20px 20px;
+}
+
+/* Responsive designs */
+@media (min-width: 768px) {
+  :host {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+  
+  .appointment-card {
+    height: 100%;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .status-pill {
+    align-self: flex-start;
+  }
+}
+/* Button group for pending appointments */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* Cancel button styling */
+.cancel-btn {
+  background: linear-gradient(135deg, #ef5350, #e53935);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(229, 57, 53, 0.3);
+}
+
+/* Create a shimmering effect */
+.cancel-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: skewX(-20deg);
+  transition: all 0.75s ease;
+}
+
+.cancel-btn:hover::before {
+  left: 100%;
+}
+
+.cancel-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
+}
+
+/* Canceled card styling */
+.canceled .card-accent {
+  background: linear-gradient(90deg, #e53935, #ef5350, #e53935);
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease infinite;
+}
+
+/* Status pill for canceled appointments */
+.status-pill.canceled {
+  background-color: rgba(229, 57, 53, 0.15);
+  color: #ef5350;
+  border: 1px solid rgba(229, 57, 53, 0.3);
+}
+
+/* Canceled badge styling */
+.canceled-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ef5350;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: rgba(229, 57, 53, 0.1);
+  border: 1px dashed rgba(229, 57, 53, 0.3);
+  position: relative;
+}
+
+/* Special styling for canceled appointments */
+.canceled .appointment-title {
+  text-decoration: line-through;
+  opacity: 0.7;
+  background: linear-gradient(90deg, #ef5350, #e0e0e0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.canceled .patient-id {
+  border-left-color: #ef5350;
+}
+
+/* Add a canceled stamp effect */
+.canceled::before {
+  content: "CANCELED";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: rgba(229, 57, 53, 0.15);
+  border: 4px solid rgba(229, 57, 53, 0.15);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Less floating animation for canceled appointments */
+.canceled.appointment-card {
+  animation: none !important;
+  transform: translateZ(0) rotateX(0deg);
+  opacity: 0.8;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.canceled.appointment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  opacity: 0.9;
+}
+
+/* Make sure both buttons are responsive */
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .cancel-btn, .confirm-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

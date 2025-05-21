@@ -30,7 +30,7 @@ import { AuthService } from '../../services/auth.service';
     MatProgressSpinnerModule
   ],
   templateUrl: './doctor-profile.component.html',
-  styleUrls: ['./doctor-profile.component.scss']
+  styleUrls: ['./doctor-profile.component.css']
 })
 export class DoctorProfileComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;

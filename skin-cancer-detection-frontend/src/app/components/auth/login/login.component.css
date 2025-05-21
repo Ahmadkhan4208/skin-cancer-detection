@@ -1,98 +1,361 @@
+/* Main container with a gradient background and decorative elements */
 .auth-container {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
-  padding: 20px;
-  background-color: transparent
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, #141e30, #1a1a2e);
+  position: relative;
+  overflow: hidden;
 }
 
+/* Background decorative elements */
+.auth-container::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle at center, rgba(66, 165, 245, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(30px);
+  animation: float 20s infinite alternate ease-in-out;
+  z-index: 0;
+}
+
+.auth-container::after {
+  content: "";
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle at center, rgba(66, 165, 245, 0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(40px);
+  animation: float 25s infinite alternate-reverse ease-in-out;
+  z-index: 0;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -20px) scale(1.05); }
+  100% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+/* Login card styling with glass-morphism effect */
 .auth-card {
   width: 100%;
   max-width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: rgba(30, 30, 46, 0.8);
+  border-radius: 16px;
   overflow: hidden;
-  background-color: #ffffff;
-  transition: transform 0.3s ease;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+              0 0 40px rgba(66, 165, 245, 0.1) inset;
+  backdrop-filter: blur(10px);
+  animation: cardAppear 0.8s ease-out forwards;
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(66, 165, 245, 0.1);
 }
 
-.auth-card:hover {
-  transform: translateY(-5px);
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+/* Card header styling */
 mat-card-header {
-  padding: 24px 24px 0;
-  background-color: #ffffff;
+  padding: 1.5rem 1.5rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(66, 165, 245, 0.1);
+}
+
+::ng-deep .mat-mdc-card-header-text {
+  margin: 0;
+  text-align: center;
 }
 
 mat-card-title {
-  font-size: 24px;
-  font-weight: 500;
-  color: #3f51b5;
-  margin-bottom: 8px !important;
+  color: #ffffff;
+  font-size: 1.8rem !important;
+  font-weight: 600;
+  margin-bottom: 0.5rem !important;
+  letter-spacing: 0.5px;
+  position: relative;
+  display: inline-block;
 }
 
+mat-card-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #42a5f5, transparent);
+  border-radius: 2px;
+}
+
+/* Card content styling */
 mat-card-content {
-  padding: 24px;
+  padding: 2rem;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form field styling */
 .full-width {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-form-field-flex {
+  background-color: rgba(30, 30, 46, 0.7) !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease;
+}
+
+::ng-deep .mat-focused .mat-mdc-form-field-flex {
+  box-shadow: 0 0 0 2px rgba(66, 165, 245, 0.2);
+}
+
+::ng-deep .mat-mdc-form-field-label {
+  color: #9e9e9e !important;
+}
+
+::ng-deep .mat-focused .mat-mdc-form-field-label {
+  color: #42a5f5 !important;
+}
+
+::ng-deep .mat-mdc-input-element {
+  color: #e0e0e0 !important;
+}
+
+::ng-deep .mat-form-field-outline {
+  color: rgba(66, 165, 245, 0.2) !important;
+}
+
+::ng-deep .mat-focused .mat-form-field-outline {
+  color: rgba(66, 165, 245, 0.5) !important;
+}
+
+::ng-deep .mat-form-field-outline-thick {
+  color: rgba(66, 165, 245, 0.5) !important;
+}
+
+/* Submit button styling with animation */
+button[type="submit"] {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  height: auto;
+  background: linear-gradient(135deg, #42a5f5, #1976d2) !important;
+  color: white !important;
+  font-weight: 500;
+  border-radius: 30px !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 10px rgba(25, 118, 210, 0.3),
+              0 0 15px rgba(66, 165, 245, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+button[type="submit"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+button[type="submit"]:hover:not([disabled]) {
+  box-shadow: 0 6px 15px rgba(25, 118, 210, 0.4),
+              0 0 20px rgba(66, 165, 245, 0.3);
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:hover:not([disabled])::before {
+  left: 200%;
+}
+
+button[type="submit"][disabled] {
+  background: linear-gradient(135deg, #78909c, #546e7a) !important;
+  box-shadow: none;
+}
+
+/* Spinner styling */
+mat-spinner {
+  margin: 0 auto;
+}
+
+::ng-deep .mat-progress-spinner circle {
+  stroke: white !important;
+}
+
+/* Footer styling */
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #9e9e9e;
+  font-size: 0.9rem;
+}
+
+.auth-footer a {
+  color: #42a5f5;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.auth-footer a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #42a5f5;
+  transition: width 0.3s ease;
+}
+
+.auth-footer a:hover {
+  color: #64b5f6;
+}
+
+.auth-footer a:hover::after {
+  width: 100%;
+}
+
+/* Error message styling */
+::ng-deep .mat-error {
+  color: #ef5350 !important;
+  font-size: 0.8rem;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .auth-card {
+    max-width: 95%;
+  }
+  
+  mat-card-title {
+    font-size: 1.5rem !important;
+  }
+  
+  mat-card-content {
+    padding: 1.5rem;
+  }
+  
+  form {
+    gap: 1rem;
+  }
+}
+
+/* Animation for error validation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+/* Error message styling fixes - complete replacement */
+::ng-deep .mat-mdc-form-field {
   width: 100%;
   margin-bottom: 16px;
 }
 
-form {
-  margin-bottom: 20px;
+/* Fix the error message appearance */
+::ng-deep .mat-mdc-form-field-error-wrapper {
+  padding: 0;
+  position: relative;
 }
 
-button[type="submit"] {
-  height: 46px;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-top: 12px;
-  transition: background-color 0.3s ease;
+::ng-deep .mat-mdc-form-field-error {
+  color: #ef5350 !important;
+  font-size: 0.75rem;
+  margin: 0;
+  padding: 4px 0 0;
 }
 
-button[type="submit"]:not([disabled]):hover {
-  background-color: #303f9f;
+/* Fix outline appearance */
+::ng-deep .mdc-notched-outline {
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.auth-footer {
-  margin-top: 32px;
-  text-align: center;
-  color: #6c757d;
+::ng-deep .mdc-notched-outline__leading,
+::ng-deep .mdc-notched-outline__notch,
+::ng-deep .mdc-notched-outline__trailing {
+  border-color: inherit !important;
 }
 
-.auth-footer a {
-  color: #3f51b5;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
+::ng-deep .mat-mdc-form-field.mat-focused .mdc-notched-outline {
+  border-color: #42a5f5 !important;
 }
 
-.auth-footer a:hover {
-  color: #303f9f;
-  text-decoration: underline;
+/* Remove previous error fixes that are causing issues */
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  position: relative !important;
 }
 
-mat-form-field {
-  margin-bottom: 12px;
+/* Fix the double box issue and padding problems */
+::ng-deep .mat-mdc-text-field-wrapper {
+  padding: 0 !important;
+  background-color: transparent !important;
 }
 
-/* For alignment of spinner in button during loading */
-mat-spinner {
-  display: inline-block;
-  margin: 0 auto;
+::ng-deep .mdc-text-field--outlined .mdc-notched-outline {
+  z-index: 1;
 }
 
-@media (max-width: 480px) {
-  .auth-card {
-    max-width: 100%;
-  }
-  
-  mat-card-title {
-    font-size: 20px;
-  }
+::ng-deep .mdc-text-field__input {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+/* Remove background from the inner field */
+::ng-deep .mat-mdc-form-field-flex {
+  background-color: transparent !important;
+}
+
+/* Make sure only one outline appears */
+::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--outlined {
+  background-color: rgba(30, 30, 46, 0.7) !important;
+  border-radius: 8px !important;
+}
+
+/* Fix notched outline appearance */
+::ng-deep .mdc-notched-outline__leading,
+::ng-deep .mdc-notched-outline__notch,
+::ng-deep .mdc-notched-outline__trailing {
+  border-width: 1px !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Remove unnecessary margins/padding */
+::ng-deep .mat-mdc-form-field-infix {
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+  min-height: auto !important;
+}
+
+::ng-deep .mat-mdc-form-field-icon-suffix,
+::ng-deep .mat-mdc-form-field-icon-prefix {
+  align-self: center !important;
 }

@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-doctor-appointments-cards',
   templateUrl: './doctor-appointments-cards.component.html',
-  styleUrls: ['./doctor-appointments-cards.component.scss'],
+  styleUrls: ['./doctor-appointments-cards.component.css'],
   standalone: true,
   imports: [CommonModule, MatIconModule]
 })
@@ -36,6 +36,12 @@ export class DoctorAppointmentsCardsComponent implements OnInit {
   confirmAppointment(appointmentId: number): void {
     this.appointmentService.updateAppointmentStatus(appointmentId, "book").subscribe(() => {
       this.fetchAppointments(); // Refresh the appointments after confirming
+    });
+  }
+
+  cancelAppointment(appointmentId: number): void {
+    this.appointmentService.updateAppointmentStatus(appointmentId, "cancel").subscribe(() => {
+      this.fetchAppointments();
     });
   }
 }

@@ -240,6 +240,7 @@ async def complete_profile(
                 contact=contact
             )
         else:  # patient
+            print("user name: ",user_name)
             profile_data = schemas.ProfileCompletePatient(
                 user_name=user_name,
                 dob=dob,

@@ -1,50 +1,46 @@
 <div class="app-container">
-  <header class="professional-header">
-    <div class="header-content">
-      <div class="logo-container">
-        <h1>Skin Cancer Detection</h1>
-        <div class="logo-subtitle">AI-Powered Diagnostic Assistant</div>
-      </div>
-      
-      <div class="auth-actions" *ngIf="isAuthenticated$ | async">
-        <!-- New Navigation Buttons -->
-        <div class="nav-buttons">
-          <button mat-stroked-button routerLink="/analyze" class="nav-button" routerLinkActive="active">
-            <mat-icon>search</mat-icon>
-            Analyze
-          </button>
-          <button mat-stroked-button routerLink="/doctor-appointments-cards" class="nav-button" routerLinkActive="active">
-            <mat-icon>calendar_today</mat-icon>
-            Appointments
-          </button>
+  <header class="navbar">
+    <!-- Logo / Title -->
+    <div class="navbar-title">
+      <h1>SkinAI</h1>
+      <span class="subtitle">Detection Assistant</span>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs" *ngIf="isAuthenticated$ | async">
+      <button mat-stroked-button routerLink="/analyze" routerLinkActive="active" class="nav-tab">
+        <mat-icon>search</mat-icon>
+        Analyze
+      </button>
+      <button mat-stroked-button routerLink="/doctor-appointments-cards" routerLinkActive="active" class="nav-tab">
+        <mat-icon>calendar_today</mat-icon>
+        Appointments
+      </button>
+    </div>
+
+    <!-- Profile Icon (Right) -->
+    <div class="profile-section" *ngIf="isAuthenticated$ | async">
+      <button mat-stroked-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+        <mat-icon class="user-icon">account_circle</mat-icon>
+      </button>
+      <mat-menu #profileMenu="matMenu" class="profile-dropdown">
+        <div class="profile-header">
+          <mat-icon>account_circle</mat-icon>
+          <div class="profile-info">
+            <div class="username">{{ getUsername(userEmail$ | async) }}</div>
+            <div class="user-role">{{ userRole$ | async | titlecase }}</div>
+          </div>
         </div>
-        
-        <!-- Profile Button with Menu -->
-        <div class="profile-section">
-          <button mat-stroked-button [matMenuTriggerFor]="profileMenu" class="profile-button">
-            <mat-icon class="user-icon">account_circle</mat-icon>
-          </button>
-          
-          <mat-menu #profileMenu="matMenu" class="profile-dropdown">
-            <div class="profile-header">
-              <mat-icon>account_circle</mat-icon>
-              <div class="profile-info">
-                <div class="username">{{ getUsername(userEmail$ | async) }}</div>
-                <div class="user-role">{{ userRole$ | async | titlecase }}</div>
-              </div>
-            </div>
-            <mat-divider></mat-divider>
-            <button mat-menu-item (click)="openProfile()">
-              <mat-icon>edit</mat-icon>
-              <span>Update Profile</span>
-            </button>
-            <button mat-menu-item (click)="logout()">
-              <mat-icon>logout</mat-icon>
-              <span>Logout</span>
-            </button>
-          </mat-menu>
-        </div>
-      </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="openProfile()">
+          <mat-icon>edit</mat-icon>
+          <span>Update Profile</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
     </div>
   </header>
 

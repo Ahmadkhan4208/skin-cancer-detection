@@ -35,7 +35,7 @@ import { AuthService } from '../../services/auth.service';
     MatNativeDateModule
   ],
   templateUrl: './patient-profile.component.html',
-  styleUrls: ['./patient-profile.component.scss']
+  styleUrls: ['./patient-profile.component.css']
 })
 export class PatientProfileComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;

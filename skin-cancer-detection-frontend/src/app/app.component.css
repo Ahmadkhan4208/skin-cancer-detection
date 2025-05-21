@@ -1,185 +1,153 @@
-/* Modern, professional styles */
-.professional-header {
-  background: linear-gradient(135deg, #3f51b5 0%, #5c6bc0 100%);
-  color: white;
-  height: 80px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 100;
+/* Main container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
-.header-content {
+/* Navbar styles */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
-  height: 100%;
+  background-color: #1e1e1e;
+  padding: 0.8rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-.logo-container h1 {
+.navbar-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.navbar-title h1 {
+  margin: 0;
+  color: #ffffff;
   font-size: 1.8rem;
   font-weight: 600;
-  margin: 0;
-  letter-spacing: 0.5px;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.logo-subtitle {
-  font-size: 0.75rem;
-  opacity: 0.8;
-  letter-spacing: 0.3px;
-  margin-top: 2px;
+.subtitle {
+  color: #9e9e9e;
+  font-size: 0.9rem;
+  margin-top: -5px;
 }
 
-.auth-actions {
+/* Navigation tabs */
+.nav-tabs {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  gap: 1rem;
+  margin-left: 2rem; /* Adds space between navbar-title and nav-tabs */
 }
 
-.nav-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.nav-button {
-  color: white;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  border-radius: 20px;
-  padding: 0 20px;
-  height: 40px;
+.nav-tab {
+  border-radius: 4px;
   font-weight: 500;
-  letter-spacing: 0.3px;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  color: #e0e0e0;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #424242;
 }
 
-.nav-button:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  transform: translateY(-1px);
+.nav-tab:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.nav-button.active {
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  font-weight: 600;
+.nav-tab mat-icon {
+  margin-right: 6px;
+  color: #9e9e9e;
 }
 
+.nav-tab.active {
+  background-color: rgba(30, 136, 229, 0.2);
+  color: #42a5f5;
+  border-color: #42a5f5;
+}
+
+.nav-tab.active mat-icon {
+  color: #42a5f5;
+}
+
+/* Profile section */
 .profile-section {
-  margin-left: 10px;
+  margin-left: auto;
 }
 
+/* Fix for profile icon in navbar */
 .profile-button {
-  color: white;
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  border-radius: 20px;
-  padding: 0 16px;
+  min-width: 0;
+  padding: 0;
+  border-radius: 50%;
+  width: 40px;
   height: 40px;
-  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #424242;
 }
 
 .profile-button:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.profile-name {
-  margin-left: 8px;
-  font-weight: 500;
+.profile-button .mat-icon {
+  margin: 0; /* Remove any default margins */
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
 }
 
-/* Profile menu enhancements */
-.mat-menu-panel {
-  border-radius: 8px !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
-  min-width: 240px !important;
+.user-icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+  color: #e0e0e0;
 }
 
-.profile-header {
-  padding: 16px;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.mat-menu-item {
-  height: 42px;
-  font-size: 0.9rem;
-}
-
-/* Professional footer */
-.professional-footer {
-  background-color: #f8f9fa;
-  padding: 24px 0;
-  border-top: 1px solid #e0e0e0;
-}
-
-.footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 40px;
-  text-align: center;
-}
-
-.footer-content p {
-  color: #616161;
-  font-size: 0.85rem;
-  margin-bottom: 12px;
-}
-
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.footer-links a {
-  color: #3f51b5;
-  text-decoration: none;
-  font-size: 0.8rem;
-  transition: color 0.2s;
-}
-
-.footer-links a:hover {
-  color: #303f9f;
-  text-decoration: underline;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .header-content {
-    padding: 0 20px;
-  }
-  
-  .nav-buttons {
-    gap: 8px;
-  }
-  
-  .nav-button span {
-    display: none;
-  }
-  
-  .profile-name {
-    display: none;
-  }
-}
-.profile-dropdown {
-  min-width: 220px;
+/* Profile dropdown menu styling */
+::ng-deep .profile-dropdown {
+  width: 240px;
+  max-width: 280px;
   padding: 8px 0;
+  background-color: #1e1e1e;
+  border: 1px solid #424242;
+}
+
+::ng-deep .mat-menu-content {
+  background-color: #1e1e1e;
+}
+
+::ng-deep .mat-menu-item {
+  color: #e0e0e0;
+}
+
+::ng-deep .mat-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .profile-header {
   display: flex;
+  padding: 16px;
   align-items: center;
-  padding: 12px 16px;
-  gap: 12px;
 }
 
+/* Fix for profile icon in dropdown */
 .profile-header mat-icon {
   font-size: 40px;
   height: 40px;
   width: 40px;
-  color: #3f51b5;
+  color: #e0e0e0;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile-info {
@@ -189,17 +157,248 @@
 
 .username {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
+  color: #ffffff;
 }
 
 .user-role {
-  font-size: 12px;
-  color: #666;
-  margin-top: 2px;
+  font-size: 14px;
+  color: #9e9e9e;
 }
 
-.mat-menu-item {
+/* Main content area */
+main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Footer styles */
+.professional-footer {
+  background-color: #1e1e1e;
+  padding: 1.5rem;
+  margin-top: auto;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-content p {
+  color: #9e9e9e;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.footer-links a {
+  color: #42a5f5;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #64b5f6;
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 0.8rem 1rem;
+  }
+  
+  .nav-tabs {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.8rem;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+  }
+  
+  .footer-links {
+    gap: 1rem;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-title h1 {
+    font-size: 1.5rem;
+  }
+  
+  main {
+    padding: 1rem;
+  }
+}
+.app-container {
+  overflow-x: hidden;
+}
+/* Reset margins and padding on body and html */
+::ng-deep body, 
+::ng-deep html {
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+}
+
+/* Main container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  overflow-x: hidden;
+}
+/* Profile dropdown menu styling */
+::ng-deep .profile-dropdown {
+  width: 240px;
+  max-width: 280px;
+  padding: 8px 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+}
+
+::ng-deep .mat-menu-content {
+  background-color: #ffffff;
+}
+
+::ng-deep .mat-menu-item {
+  color: #333333;
+}
+
+::ng-deep .mat-menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.profile-header {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+}
+
+/* Fix for profile icon in dropdown */
+.profile-header mat-icon {
+  font-size: 40px;
+  height: 40px;
+  width: 40px;
+  color: #333333;
+  margin-right: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+}
+
+.username {
+  font-weight: 500;
+  font-size: 16px;
+  color: #333333;
+}
+
+.user-role {
+  font-size: 14px;
+  color: #757575;
+}
+/* Profile dropdown menu styling */
+::ng-deep .profile-dropdown {
+  width: 240px;
+  max-width: 280px;
+  padding: 8px 0;
+  background-color: #1e1e1e;
+  border: 1px solid #424242;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  /* Removed glittering animation */
+}
+
+::ng-deep .mat-menu-content {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+}
+
+::ng-deep .mat-menu-item {
+  color: #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+::ng-deep .mat-menu-item:hover {
+  background-color: rgba(66, 165, 245, 0.15);
+  color: #42a5f5;
+}
+
+::ng-deep .mat-menu-item .mat-icon {
+  color: #9e9e9e;
+  transition: color 0.2s ease;
+}
+
+::ng-deep .mat-menu-item:hover .mat-icon {
+  color: #42a5f5;
+}
+
+.profile-header {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+  border-bottom: 1px solid rgba(66, 165, 245, 0.2);
+  margin-bottom: 8px;
+}
+
+/* Fix for profile icon in dropdown */
+.profile-header mat-icon {
+  font-size: 40px;
+  height: 40px;
+  width: 40px;
+  color: #e0e0e0;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #42a5f5, #1976d2);
+  border-radius: 50%;
+  padding: 4px;
+  box-shadow: 0 0 10px rgba(66, 165, 245, 0.4);
+  animation: iconGlow 2s infinite alternate;
+}
+
+@keyframes iconGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(66, 165, 245, 0.4);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(66, 165, 245, 0.7);
+  }
+}
+
+.username {
+  font-weight: 500;
+  font-size: 16px;
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(66, 165, 245, 0.3);
+}
+
+.user-role {
+  font-size: 14px;
+  color: #42a5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
 }

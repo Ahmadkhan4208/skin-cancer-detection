@@ -124,7 +124,8 @@ async def complete_user_profile(
 
         if patient:
             # Update existing patient profile
-            patient.full_name = profile_data.user_name
+            print(profile_data.user_name)
+            patient.user_name = profile_data.user_name
             patient.dob = profile_data.dob
             patient.contact = profile_data.contact
         else:

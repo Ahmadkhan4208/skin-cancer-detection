@@ -1,100 +1,189 @@
-.upload-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
-    color: #3f51b5;  
-    margin-bottom: 16px;
-  }
-  
-  .icon-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 8px;
-  }
-  
-  /* Ensure Material Icons are properly aligned */
-  .mat-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .upload-area {
-    transition: all 0.3s ease;
-  }
-  
-  .results-container {
-    margin-top: 20px;
-  }
-  
-  /* Ensure proper spacing when switching between views */
-  .upload-card {
-    min-height: 400px; /* Adjust based on your design */
-    display: flex;
-    flex-direction: column;
-  }
-  /* Add these styles to your existing CSS */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+.upload-card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.upload-card h2 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.upload-card .subtitle {
+  color: #9e9e9e;
+  margin-bottom: 2rem;
+}
+
 .upload-area {
-    transition: all 0.3s ease;
-    opacity: 1;
+  border: 2px dashed #424242;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 200px;
+  transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.upload-area:hover {
+  border-color: #42a5f5;
+  background-color: rgba(66, 165, 245, 0.05);
+}
+
+.drag-over {
+  border-color: #42a5f5;
+  background-color: rgba(66, 165, 245, 0.1);
+}
+
+.icon-container {
+  margin-bottom: 1rem;
+}
+
+.upload-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #42a5f5;
+}
+
+.upload-area p {
+  color: #9e9e9e;
+  margin: 0;
+}
+
+.preview-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.image-preview {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.remove-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+}
+
+.actions {
+  margin-top: 1.5rem;
+}
+
+.actions button {
+  min-width: 120px;
+  background-color: #42a5f5;
+  color: white;
+}
+
+.actions button:hover {
+  background-color: #1976d2;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: 8px;
+}
+
+.loading-text {
+  margin-top: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Angular material overrides */
+::ng-deep .mat-progress-spinner circle {
+  stroke: #42a5f5 !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .upload-card {
+    padding: 1.5rem;
+    margin: 1rem;
   }
   
-  .upload-area.hidden {
-    opacity: 0;
-    pointer-events: none;
-    height: 0;
-    overflow: hidden;
+  .upload-area {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .upload-card {
+    padding: 1rem;
   }
   
-  .loading-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    text-align: center;
+  .upload-area {
+    padding: 1rem;
+    min-height: 150px;
   }
   
-  .preview-container {
-    position: relative;
-    margin: 0 auto;
-    max-width: 300px;
+  .upload-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
   }
-  
-  .image-preview {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 4px;
+}
+.upload-card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3),
+              0 0 15px rgba(66, 165, 245, 0.3),
+              0 0 30px rgba(33, 150, 243, 0.15);
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  text-align: center;
+  animation: glitterShadow 1s infinite alternate;
+}
+
+@keyframes glitterShadow {
+  0% {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(66, 165, 245, 0.3),
+                0 0 30px rgba(33, 150, 243, 0.15);
   }
-  
-  .remove-btn {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  100% {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(66, 165, 245, 0.5),
+                0 0 40px rgba(33, 150, 243, 0.25);
   }
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.9);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .loading-text {
-    margin-top: 20px;
-    font-size: 1.2rem;
-    color: #3f51b5;
-  }
-  
-  /* Ensure spinner is properly colored */
-  .mat-progress-spinner circle, .mat-spinner circle {
-    stroke: #3f51b5;
-  }
+}
