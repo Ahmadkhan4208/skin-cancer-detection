@@ -127,3 +127,17 @@ class ProfileCompletePatient(BaseModel):
     user_name: str
     dob: date
     contact: str
+
+# Add to schemas.py file
+class PredictionHistory(BaseModel):
+    id: int
+    user_id: int
+    image_path: str
+    predicted_class: str
+    predicted_at: datetime
+    confidence: float
+    conclusion: str
+    description: str
+    
+    class Config:
+        orm_mode = True

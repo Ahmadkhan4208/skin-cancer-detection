@@ -42,7 +42,7 @@ export class AppointmentService {
 
   // Get all appointments for current patient
   getPatientAppointments(patientId: number): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(`${this.apiUrl}?patient_id=${patientId}`);
+    return this.http.get<Appointment[]>(`${this.apiUrl}/patient/${patientId}`);
   }
 
   getDoctorAppointments(doctorId: number): Observable<Appointment[]> {

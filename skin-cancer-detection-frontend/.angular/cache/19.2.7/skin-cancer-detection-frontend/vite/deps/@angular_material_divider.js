@@ -3,7 +3,7 @@ import {
 } from "./chunk-IFTZZKWL.js";
 import {
   MatCommonModule
-} from "./chunk-HTLANP2H.js";
+} from "./chunk-27KQL4VA.js";
 import "./chunk-M3HR6BUY.js";
 import "./chunk-WDUQNR2T.js";
 import "./chunk-4S2JU7CT.js";
@@ -23,8 +23,8 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule
 } from "./chunk-AF2GL2QR.js";
-import "./chunk-FFZIAYYX.js";
 import "./chunk-6Q4RANH6.js";
+import "./chunk-FFZIAYYX.js";
 import "./chunk-CXCX2JKZ.js";
 
 // node_modules/@angular/material/fesm2022/divider-module-13f553ae.mjs

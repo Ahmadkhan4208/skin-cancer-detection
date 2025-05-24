@@ -16,6 +16,7 @@ export interface AppointmentBase {
     status: 'pending' | 'book' | 'rate' | 'cancel';
     doctor: Doctor;
     patient: Patient;
+    prediction_id?: number;
   }
   
   export interface Doctor {

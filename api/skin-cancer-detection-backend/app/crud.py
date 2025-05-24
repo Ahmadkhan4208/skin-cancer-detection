@@ -247,7 +247,26 @@ def get_appointments_for_doctor(db: Session, doctor_id: int):
             "patient_id": appointment.patient_id,
             "date_time": appointment.date_time,
             "notes": appointment.notes,
-            "status": appointment.status
+            "status": appointment.status,
+            "prediction_id": appointment.prediction_id
+        }
+        for appointment in appointments
+    ]
+
+def get_appointments_for_patient(db: Session, patient_id: int):
+    """Retrieve all appointments for a specific patient."""
+    appointments = db.query(models.Appointment).filter(
+        models.Appointment.patient_id == patient_id
+    ).order_by(models.Appointment.date_time.asc()).all()  # Sort by date_time ascending
+
+    return [
+        {
+            "appointment_id": appointment.id,
+            "doctor_id": appointment.doctor_id,
+            "date_time": appointment.date_time,
+            "notes": appointment.notes,
+            "status": appointment.status,
+            "prediction_id": appointment.prediction_id
         }
         for appointment in appointments
     ]
@@ -312,5 +331,28 @@ def update_doctor_rating(db: Session, appointment_id: int, new_rating: float):
     except Exception as e:
         db.rollback()
         raise e
+# Add to crud.py file
+def get_prediction_history(db: Session):
+    """Get all prediction history records."""
+    try:
+        predictions = db.query(models.PredictionHistory).order_by(
+            models.PredictionHistory.predicted_at.desc()
+        ).all()
+        
+        return predictions
+    except Exception as e:
+        raise Exception(f"Database error: {str(e)}")
+
+# Add to crud.py file
+def get_prediction_by_id(db: Session, prediction_id: int):
+    """Get a specific prediction history record by ID."""
+    try:
+        prediction = db.query(models.PredictionHistory).filter(
+            models.PredictionHistory.id == prediction_id
+        ).first()
+        
+        return prediction
+    except Exception as e:
+        raise Exception(f"Database error: {str(e)}")
 
 

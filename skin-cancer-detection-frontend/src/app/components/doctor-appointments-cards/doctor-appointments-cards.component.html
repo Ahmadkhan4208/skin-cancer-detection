@@ -23,8 +23,8 @@
     <h3 class="appointment-title">{{appointment.notes || 'Medical Appointment'}}</h3>
 
     <div class="card-actions">
-      <!-- Show confirm and cancel buttons for pending appointments -->
-      <div *ngIf="appointment.status === 'pending'" class="button-group">
+      <!-- Show confirm and cancel buttons for pending appointments - ONLY FOR DOCTORS -->
+      <div *ngIf="appointment.status === 'pending' && (userRole$ | async) === 'doctor'" class="button-group">
         <button (click)="cancelAppointment(appointment.appointment_id)" class="cancel-btn">
           <svg class="icon" viewBox="0 0 24 24">
             <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
@@ -38,6 +38,14 @@
           </svg>
           Confirm Booking
         </button>
+      </div>
+      
+      <!-- Show pending waiting badge for patients -->
+      <div *ngIf="appointment.status === 'pending' && (userRole$ | async) === 'patient'" class="pending-badge">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12.5,7H11V13L16.2,16.2L17,14.9L12.5,12.2V7Z"/>
+        </svg>
+        Awaiting Doctor Confirmation
       </div>
       
       <!-- Show booked badge for booked appointments -->
@@ -55,6 +63,82 @@
         </svg>
         Appointment Canceled
       </div>
+      
+      <!-- View Results button - Show only if prediction_id exists -->
+      <div *ngIf="appointment.prediction_id" class="view-results-container">
+        <button (click)="openPredictionModal(appointment.prediction_id)" class="view-results-btn">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z"/>
+          </svg>
+          View Results
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- Prediction Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal($event)">
+  <div class="modal-container" #modalContainer>
+    <div class="modal-header">
+      <h2>Prediction Results</h2>
+      <button class="close-button" (click)="closeModal($event)">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="modal-content" *ngIf="currentPrediction">
+      <div class="prediction-details">
+        <div class="image-container">
+          <img [src]="getPredictionImageUrl(currentPrediction.image_path)" alt="Skin Lesion Image" class="prediction-image">
+          <div class="image-overlay" [ngClass]="getStatusClass(currentPrediction.conclusion)"></div>
+        </div>
+        
+        <div class="result-details">
+          <div class="result-header">
+            <div class="prediction-type">
+              {{ currentPrediction.predicted_class }}
+            </div>
+            <div class="status-badge" [ngClass]="getStatusClass(currentPrediction.conclusion)">
+              {{ currentPrediction.conclusion }}
+            </div>
+          </div>
+          
+          <div class="prediction-description">
+            {{ currentPrediction.description || 'No description available.' }}
+          </div>
+          
+          <div class="confidence-section">
+            <div class="confidence-label">Confidence Level</div>
+            <div class="confidence-bar-container">
+              <div class="confidence-bar" [style.width.%]="currentPrediction.confidence * 100"></div>
+              <div class="confidence-value">{{ (currentPrediction.confidence * 100).toFixed(1) }}%</div>
+            </div>
+          </div>
+          
+          <div class="prediction-meta">
+            <div class="meta-item">
+              <span class="meta-label">Predicted On:</span>
+              <span class="meta-value">{{ currentPrediction.predicted_at | date:'MMM d, y, h:mm a' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-content loading" *ngIf="isLoading">
+      <div class="loading-spinner"></div>
+      <p>Loading prediction results...</p>
+    </div>
+    
+    <!-- <div class="modal-content error" *ngIf="error">
+      <svg class="error-icon" viewBox="0 0 24 24" width="48" height="48">
+        <path d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z"/>
+      </svg>
+      <p>{{ error }}</p>
+      <button class="retry-button" (click)="openPredictionModal(currentPredictionId)">Try Again</button>
+    </div> -->
   </div>
 </div>

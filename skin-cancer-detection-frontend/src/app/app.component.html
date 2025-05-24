@@ -6,20 +6,35 @@
       <span class="subtitle">Detection Assistant</span>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs - Different options based on role -->
     <div class="nav-tabs" *ngIf="isAuthenticated$ | async">
-      <button mat-stroked-button routerLink="/analyze" routerLinkActive="active" class="nav-tab">
-        <mat-icon>search</mat-icon>
-        Analyze
-      </button>
-      <button mat-stroked-button routerLink="/doctor-appointments-cards" routerLinkActive="active" class="nav-tab">
-        <mat-icon>calendar_today</mat-icon>
-        Appointments
-      </button>
+      <!-- Show for patients and doctors -->
+      <ng-container *ngIf="(userRole$ | async) !== 'researcher'">
+        <button mat-stroked-button routerLink="/analyze" routerLinkActive="active" class="nav-tab">
+          <mat-icon>search</mat-icon>
+          Analyze
+        </button>
+        <button mat-stroked-button routerLink="/doctor-appointments-cards" routerLinkActive="active" class="nav-tab">
+          <mat-icon>calendar_today</mat-icon>
+          Appointments
+        </button>
+      </ng-container>
+      
+      <!-- Show only for researchers -->
+      <ng-container *ngIf="(userRole$ | async) === 'researcher'">
+        <button mat-stroked-button routerLink="/prediction-history" routerLinkActive="active" class="nav-tab">
+          <mat-icon>assessment</mat-icon>
+          Predictions
+        </button>
+        <button mat-stroked-button (click)="logout()" class="nav-tab logout-tab">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </ng-container>
     </div>
 
-    <!-- Profile Icon (Right) -->
-    <div class="profile-section" *ngIf="isAuthenticated$ | async">
+    <!-- Profile Icon (Right) - Only show for non-researchers -->
+    <div class="profile-section" *ngIf="(isAuthenticated$ | async) && (userRole$ | async) !== 'researcher'">
       <button mat-stroked-button [matMenuTriggerFor]="profileMenu" class="profile-button">
         <mat-icon class="user-icon">account_circle</mat-icon>
       </button>

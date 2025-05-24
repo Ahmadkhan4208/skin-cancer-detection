@@ -39,6 +39,20 @@
         <div class="auth-footer">
           <p>Don't have an account? <a routerLink="/register">Register</a></p>
         </div>
+        
+        <div class="researcher-login">
+          <div class="divider">
+            <span>OR</span>
+          </div>
+          <button 
+            mat-stroked-button 
+            color="accent" 
+            class="full-width researcher-button"
+            (click)="loginAsResearcher()">
+            <mat-icon>science</mat-icon>
+            <span>Login as Researcher</span>
+          </button>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

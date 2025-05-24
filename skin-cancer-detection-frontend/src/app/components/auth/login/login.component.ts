@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./login.component.css'],
   standalone: true,
   imports: [
+    MatIconModule,
     RouterModule,
     CommonModule,
     ReactiveFormsModule,
@@ -70,4 +72,20 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+  loginAsResearcher(): void {
+    this.isLoading = true;
+    // Use pre-defined researcher credentials
+    this.authService.login('researcher@example.com', 'research123').subscribe({
+      next: () => {
+        this.router.navigate(['/prediction-history']);
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.snackBar.open('Researcher login failed. Contact administrator.', 'Close', {
+          duration: 3000
+        });
+      }
+    });
+  }
 }
+  

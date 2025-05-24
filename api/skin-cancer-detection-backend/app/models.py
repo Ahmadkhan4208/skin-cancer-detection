@@ -164,6 +164,7 @@ class Appointment(Base):
     date_time = Column(DateTime)
     notes = Column(String, nullable=True)
     status = Column(String, default="pending")  # pending/confirmed/cancelled
+    prediction_id = Column(Integer, ForeignKey("prediction_history.id"), nullable=True)
     
     # Relationships
     patient = relationship("Patient", back_populates="appointments")

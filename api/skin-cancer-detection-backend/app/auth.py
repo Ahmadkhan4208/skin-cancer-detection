@@ -335,6 +335,21 @@ def get_appointments_for_doctor_endpoint(
         return appointments
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error retrieving appointments: {str(e)}")
+
+@router.get("/appointments/patient/{patient_id}")
+def get_appointments_for_patient_endpoint(
+    patient_id: int,
+    db: Session = Depends(get_db)
+):
+    """Endpoint to retrieve all appointments for a specific patient."""
+    try:
+        appointments = crud.get_appointments_for_patient(db, patient_id)
+        if not appointments:
+            raise HTTPException(status_code=404, detail="No appointments found for this patient.")
+        print("appointments: ",appointments)
+        return appointments
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error retrieving appointments: {str(e)}")
     
 @router.get("/patientdetails/{user_id}")
 def get_patient_profile(user_id: int, db: Session = Depends(get_db)):
@@ -392,3 +407,27 @@ async def login_for_access_token(
         "role": user.role,
         "user_id": user.id
     }
+
+# Add to auth.py file
+@router.get("/prediction-history", response_model=List[schemas.PredictionHistory])
+def get_prediction_history(db: Session = Depends(get_db)):
+    """Retrieve all prediction history records."""
+    try:
+        predictions = crud.get_prediction_history(db)
+        return predictions
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving prediction history: {str(e)}")
+    
+# Add to auth.py file
+@router.get("/prediction/{prediction_id}", response_model=schemas.PredictionHistory)
+def get_prediction_by_id(prediction_id: int, db: Session = Depends(get_db)):
+    """Retrieve a specific prediction by its ID."""
+    try:
+        prediction = crud.get_prediction_by_id(db, prediction_id)
+        if not prediction:
+            raise HTTPException(status_code=404, detail="Prediction not found")
+        return prediction
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error retrieving prediction: {str(e)}")

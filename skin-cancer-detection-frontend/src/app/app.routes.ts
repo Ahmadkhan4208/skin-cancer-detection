@@ -7,6 +7,7 @@ import { DoctorProfileComponent } from './components/doctor-profile/doctor-profi
 import { PatientProfileComponent } from './components/patient-profile/patient-profile.component';
 import { DoctorConsultationComponent } from './components/doctor-consultation/doctor-consultation.component';
 import { DoctorAppointmentsCardsComponent } from './components/doctor-appointments-cards/doctor-appointments-cards.component';
+import { PredictionHistoryComponent } from './components/prediction-history/prediction-history';
 
 export const routes: Routes = [
   { 
@@ -42,6 +43,10 @@ export const routes: Routes = [
   {
     path: 'doctor-appointments-cards',
     component: DoctorAppointmentsCardsComponent
+  },
+  {
+    path: 'prediction-history',
+    component: PredictionHistoryComponent
   },
   { 
     path: '**', 

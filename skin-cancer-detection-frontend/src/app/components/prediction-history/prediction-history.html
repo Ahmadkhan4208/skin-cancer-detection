@@ -1,0 +1,72 @@
+<div class="history-container">
+  <div class="history-header">
+    <h1 class="header-title">
+      <mat-icon>history</mat-icon>
+      Prediction History
+    </h1>
+    <p class="header-subtitle">Comprehensive record of all skin lesion analyses performed on the platform</p>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading prediction records...</p>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-raised-button color="primary" (click)="loadPredictionHistory()">Try Again</button>
+  </div>
+
+  <div class="history-grid" *ngIf="!isLoading && !error">
+    <mat-card class="prediction-card" *ngFor="let prediction of predictions">
+      <div class="prediction-header">
+        <div class="prediction-meta">
+          <div class="timestamp">
+            <mat-icon>event</mat-icon>
+            {{ getFormattedDate(prediction.predicted_at) }}
+          </div>
+          <div class="prediction-id">#{{ prediction.id }}</div>
+        </div>
+        <div class="status-chip" [ngClass]="getStatusClass(prediction.conclusion)">
+          {{ prediction.conclusion }}
+        </div>
+      </div>
+
+      <div class="prediction-content">
+        <div class="image-container">
+          <img [src]="getImageUrl(prediction.image_path)" alt="Skin Lesion Image" class="prediction-image">
+          <div class="image-overlay"></div>
+        </div>
+
+        <div class="prediction-details">
+          <h3 class="prediction-type">
+            {{ prediction.predicted_class | uppercase }}
+          </h3>
+          
+          <p class="prediction-description">
+            {{ prediction.description }}
+          </p>
+
+          <div class="confidence-container">
+            <div class="confidence-label">Confidence</div>
+            <div class="confidence-meter">
+              <div class="confidence-bar" [style.width.%]="prediction.confidence * 100"></div>
+            </div>
+            <div class="confidence-value">{{ (prediction.confidence * 100).toFixed(1) }}%</div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="no-results" *ngIf="!isLoading && !error && predictions.length === 0">
+    <mat-icon>search_off</mat-icon>
+    <h3>No prediction records found</h3>
+    <p>No skin lesion analyses have been performed yet or the records aren't available.</p>
+  </div>
+
+  <button mat-fab class="back-to-top" (click)="scrollToTop()">
+    <mat-icon>arrow_upward</mat-icon>
+  </button>
+</div>
